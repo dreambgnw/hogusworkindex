@@ -12,6 +12,7 @@
             --sub-text: #666666;
             --modal-bg: rgba(255, 255, 255, 0.95);
             --border-color: #eeeeee;
+            --sidebar-bg: rgba(255, 255, 255, 0.9);
             --font-main: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
         }
 
@@ -22,6 +23,7 @@
                 --sub-text: #a0a0a0;
                 --modal-bg: rgba(18, 18, 18, 0.98);
                 --border-color: #333333;
+                --sidebar-bg: rgba(18, 18, 18, 0.9);
             }
         }
 
@@ -52,7 +54,7 @@
             100% { opacity: 0; transform: scale(1.1); }
         }
 
-        /* Full Screen Layout */
+        /* Layout */
         .wrapper {
             display: flex; width: 100%; height: 100vh;
             opacity: 0; transition: opacity 1.2s ease;
@@ -60,18 +62,52 @@
         }
         .loaded .wrapper { opacity: 1; }
 
-        /* Sidebar Content */
-        .sidebar {
+        /* Main Sidebar (Left) */
+        .main-nav {
             width: 400px; flex-shrink: 0; height: 100%; padding: 4rem 3rem;
             display: flex; flex-direction: column; justify-content: space-between;
             background: linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 100%);
             color: white; z-index: 20; position: absolute; left: 0;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* Visual Area */
         .visual-area { width: 100%; height: 100%; position: absolute; background-color: #000; z-index: 10; }
         .slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 2s; }
         .slide.active { opacity: 1; }
+
+        /* Blog Sidebar View (Right) */
+        #blog-sidebar {
+            position: fixed; top: 0; right: -500px; width: 500px; height: 100%;
+            background-color: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 4rem 3rem;
+            display: flex; flex-direction: column;
+            border-left: 1px solid var(--border-color);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+        }
+        #blog-sidebar.active { transform: translateX(-500px); }
+
+        .blog-list { list-style: none; margin-top: 2rem; overflow-y: auto; flex-grow: 1; }
+        .blog-item {
+            padding: 1.5rem 0; border-bottom: 1px solid var(--border-color);
+            cursor: pointer; transition: 0.3s;
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .blog-item:hover { transform: translateX(5px); color: var(--accent-color); }
+        .blog-date { font-size: 0.75rem; color: var(--sub-text); margin-bottom: 0.3rem; }
+        .blog-title { font-size: 1.1rem; font-weight: 700; line-height: 1.4; }
+
+        .close-sidebar {
+            position: absolute; top: 2rem; right: 2rem;
+            cursor: pointer; font-size: 0.8rem; font-weight: bold;
+            color: var(--sub-text); text-transform: uppercase; letter-spacing: 0.1em;
+        }
 
         /* UI Elements */
         h1 { font-size: 2.2rem; font-weight: 900; color: white; margin-bottom: 2rem; }
@@ -82,7 +118,7 @@
         .section-title { font-size: 0.7rem; font-weight: bold; color: var(--accent-color); margin-top: 2rem; margin-bottom: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em; }
         nav ul { list-style: none; }
         nav li { margin-bottom: 0.8rem; }
-        nav a { text-decoration: none; color: white; font-size: 1.2rem; font-weight: 500; transition: 0.3s; position: relative; }
+        nav a { text-decoration: none; color: white; font-size: 1.2rem; font-weight: 500; transition: 0.3s; position: relative; cursor: pointer; }
         nav a::after { content: ""; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background-color: var(--accent-color); transition: 0.3s; }
         nav a:hover { color: var(--accent-color); }
         nav a:hover::after { width: 100%; }
@@ -98,15 +134,10 @@
         .modal-content { width: 90%; max-width: 400px; padding: 2rem; color: var(--text-color); }
 
         /* Mobile */
-        .mobile-footer { display: none; }
         @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .mobile-footer {
-                display: grid; grid-template-columns: repeat(3, 1fr);
-                position: absolute; bottom: 0; width: 100%; padding: 3rem 1.5rem;
-                background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; z-index: 30; gap: 1rem;
-            }
-            .mobile-item { display: block; font-size: 0.85rem; color: white; text-decoration: none; margin-bottom: 0.3rem; }
+            .main-nav { width: 100%; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)); }
+            #blog-sidebar { width: 100%; right: -100%; }
+            #blog-sidebar.active { transform: translateX(-100%); }
         }
     </style>
 </head>
@@ -131,7 +162,8 @@
             <div class="slide" style="background-image: url('https://media.ffnet.work/PXL_20260112_125325168.jpg');"></div>
         </section>
 
-        <aside class="sidebar">
+        <!-- Left Main Navigation -->
+        <aside class="main-nav">
             <header>
                 <h1>QUICK INSTANT</h1>
                 <span class="admin-label">Admin</span>
@@ -140,8 +172,7 @@
             <nav>
                 <p class="section-title">Log</p>
                 <ul>
-                    <!-- 直接Notionの公開リンクへ -->
-                    <li><a href="https://understood-helmet-14b.notion.site/blog-posts-3014a21752398089ace4c3d8ff8c416f?source=copy_link" target="_blank">Blog</a></li>
+                    <li><a onclick="toggleBlogSidebar(true)">Blog</a></li>
                     <li><a href="#">Podcast</a></li>
                 </ul>
                 <p class="section-title">Connect</p>
@@ -155,27 +186,30 @@
             </footer>
         </aside>
 
-        <!-- Mobile Layout -->
-        <div class="mobile-footer">
-            <div>
-                <div style="font-weight: 900; margin-bottom: 0.5rem;">QUICK INSTANT</div>
-                <div onclick="toggleModal(true)" style="font-size: 0.75rem; border-left: 2px solid var(--accent-color); padding-left: 8px;">Shun Tonegawa</div>
-            </div>
-            <div>
-                <div class="section-title" style="margin-top: 0;">Log</div>
-                <a href="https://understood-helmet-14b.notion.site/blog-posts-3014a21752398089ace4c3d8ff8c416f?source=copy_link" target="_blank" class="mobile-item">Blog</a>
-                <a href="#" class="mobile-item">Podcast</a>
-            </div>
-            <div>
-                <div class="section-title" style="margin-top: 0;">Connect</div>
-                <a href="https://signal.me/#p/+818073531103" target="_blank" class="mobile-item">Signal</a>
-                <a href="https://discord.com/users/926618585472819200" target="_blank" class="mobile-item">Discord</a>
+        <!-- Right Blog Sidebar View -->
+        <div id="blog-sidebar">
+            <span class="close-sidebar" onclick="toggleBlogSidebar(false)">Close —</span>
+            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">Log / Blog</h2>
+            <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">Notionで綴る、思考の果て。</p>
+            
+            <ul id="notion-blog-list" class="blog-list">
+                <li class="blog-item" style="cursor: default; opacity: 0.5;">Loading latest posts...</li>
+            </ul>
+
+            <div style="margin-top: auto; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                <!-- 実際のDB IDに合わせてリンクも更新 -->
+                <a href="https://www.notion.so/3014a21752398028baec000b4570b782" target="_blank" style="font-size: 0.75rem; color: var(--accent-color); text-decoration: none; font-weight: bold;">VIEW ALL ON NOTION →</a>
             </div>
         </div>
     </div>
 
     <script>
+        // --- Cloudflare WorkerのURL ---
+        const WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/";
+
         window.addEventListener('load', () => {
+            fetchLatestPosts();
+
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
                 document.body.classList.add('loaded');
@@ -183,13 +217,84 @@
             }, 2500);
         });
 
+        // Notion Workerから最新記事を取得
+        async function fetchLatestPosts() {
+            const listEl = document.getElementById('notion-blog-list');
+            
+            try {
+                if (!WORKER_URL.startsWith('http')) {
+                    throw new Error('WORKER_URLが設定されていません。');
+                }
+
+                const response = await fetch(WORKER_URL, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+
+                const textData = await response.text();
+                let data;
+                
+                try {
+                    data = JSON.parse(textData);
+                } catch(e) {
+                    throw new Error(`Invalid JSON from Worker: ${textData.substring(0, 100)}`);
+                }
+
+                if (!response.ok) {
+                    throw new Error(data.error || `Worker Error ${response.status}`);
+                }
+
+                // データの最終チェック
+                if (!data || !Array.isArray(data)) {
+                    throw new Error('Workerから返されたデータが配列ではありません。');
+                }
+
+                if (data.length === 0) {
+                    listEl.innerHTML = '<li class="blog-item" style="cursor:default">No public posts found.</li>';
+                    return;
+                }
+
+                listEl.innerHTML = data.map((post, index) => `
+                    <li class="blog-item" style="animation-delay: ${index * 0.1}s" onclick="window.open('${post.url || '#'}', '_blank')">
+                        <div class="blog-date">${(post.date || '').replace(/-/g, '.')}</div>
+                        <div class="blog-title">${post.title || 'Untitled'}</div>
+                    </li>
+                `).join('');
+
+            } catch (error) {
+                console.error('Fetch Error:', error);
+                listEl.innerHTML = `<li class="blog-item" style="cursor:default; border-bottom: none;">
+                    <div style="color: #ff4444; font-weight: bold; font-size: 0.9rem;">Worker Sync Error</div>
+                    <div style="font-size: 0.7rem; opacity: 0.7; margin-top: 0.5rem; line-height: 1.4;">
+                        ${error.message}<br><br>
+                        <strong>次に試すべきこと:</strong><br>
+                        1. Worker内の <code>NOTION_DB_ID</code> を <code>3014a21752398028baec000b4570b782</code> に設定してください。<br>
+                        2. データベースをインテグレーションに共有（Connect）してください。
+                    </div>
+                </li>`;
+            }
+        }
+
+        // Sidebar Toggle
+        function toggleBlogSidebar(show) {
+            const sidebar = document.getElementById('blog-sidebar');
+            if (show) {
+                sidebar.classList.add('active');
+            } else {
+                sidebar.classList.remove('active');
+            }
+        }
+
+        // Slideshow
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
-        setInterval(() => {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 5000);
+        if (slides.length > 0) {
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 5000);
+        }
 
         function toggleModal(show) {
             document.getElementById('modal-overlay').classList.toggle('active', show);
