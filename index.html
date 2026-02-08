@@ -36,7 +36,7 @@
             color: var(--text-color);
             font-family: var(--font-main);
             line-height: 1.6;
-            overflow: hidden; /* スクロールを完全に無効化 */
+            overflow: hidden; /* 全デバイスでスクロールを無効化 */
         }
 
         /* Loading Animation */
@@ -52,85 +52,123 @@
             align-items: center;
             z-index: 3000;
             opacity: 1;
-            transition: opacity 0.8s ease;
+            /* 背景の消失アニメーションを定義 */
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #loader span {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
+            font-size: 8vw;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            position: relative;
+            /* 背景を透過してスライドショーを見せるための設定 */
+            background-color: var(--text-color);
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
             opacity: 0;
-            transform: translateY(10px);
-            animation: fadeInOut 2.3s ease forwards;
+            transform: scale(0.95);
+            animation: loaderTextAnim 3s ease-in-out forwards;
         }
 
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(10px); }
-            20% { opacity: 1; transform: translateY(0); }
-            80% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-10px); }
+        @keyframes loaderTextAnim {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.95);
+                background-color: var(--text-color);
+            }
+            20% { 
+                opacity: 1; 
+                transform: scale(1);
+                background-color: var(--text-color);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1);
+                background-color: var(--text-color);
+            }
+            /* 終了直前：背景色を透明に切り替え、背面のスライドショーを透かす */
+            80% {
+                opacity: 1;
+                transform: scale(1.05);
+                background-color: transparent;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.1);
+                background-color: transparent;
+            }
         }
 
-        /* Split Layout Container */
+        /* Full Screen Container */
         .wrapper {
             display: flex;
             width: 100%;
             height: 100vh;
             opacity: 0;
-            transition: opacity 1s ease 2.5s;
+            /* loaderの消失と同時に表示を開始 */
+            transition: opacity 1.2s ease;
+            position: relative;
         }
 
         .loaded .wrapper {
             opacity: 1;
         }
 
-        /* Left Side: Sidebar Content */
+        /* Sidebar Content */
         .sidebar {
-            width: 400px; /* 固定幅に設定してタイポグラフィの安定感を出す */
+            width: 400px;
             flex-shrink: 0;
             height: 100%;
             padding: 4rem 3rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            background-color: var(--bg-color);
+            background: linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 100%);
+            color: white;
+            z-index: 20;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Visual Area */
+        .visual-area {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #000;
+            overflow: hidden;
             z-index: 10;
         }
 
-        /* Right Side: Visual Area */
-        .visual-area {
-            flex-grow: 1;
-            height: 100%;
-            position: relative;
-            background-color: #000;
-            overflow: hidden;
-        }
-
-        .hero-image {
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://images.unsplash.com/photo-1493246507139-91e8bef99c1a?auto=format&fit=crop&q=80&w=2070');
             background-size: cover;
             background-position: center;
             opacity: 0;
-            transition: opacity 2s ease;
+            transition: opacity 2s ease-in-out;
         }
 
-        .loaded .hero-image {
+        .slide.active {
             opacity: 1;
         }
 
-        /* Typography & Navigation */
-        header {
-            margin-bottom: 2rem;
-        }
-
+        /* Typography */
         h1 {
             font-size: 2.2rem;
             font-weight: 900;
             letter-spacing: -0.02em;
             margin-bottom: 2rem;
             line-height: 1;
+            color: white;
         }
 
         .admin-label {
@@ -145,12 +183,12 @@
 
         .shun-name-trigger {
             display: inline-block;
-            color: var(--text-color);
+            color: white;
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             padding-bottom: 2px;
             transition: border-color 0.3s;
         }
@@ -173,10 +211,6 @@
             letter-spacing: 0.1em;
         }
 
-        nav {
-            margin-bottom: 2.5rem;
-        }
-
         nav ul {
             list-style: none;
         }
@@ -187,7 +221,7 @@
 
         nav a {
             text-decoration: none;
-            color: var(--text-color);
+            color: white;
             font-size: 1.2rem;
             font-weight: 500;
             transition: color 0.3s ease;
@@ -214,10 +248,59 @@
             width: 100%;
         }
 
-        footer {
-            font-size: 0.65rem;
-            color: var(--sub-text);
-            margin-top: 2rem;
+        /* Mobile Layout */
+        .mobile-footer {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .mobile-footer {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 3rem 1.5rem;
+                background: linear-gradient(transparent, rgba(0,0,0,0.8));
+                color: white;
+                z-index: 30;
+                gap: 1rem;
+            }
+            .mobile-col-title {
+                font-size: 0.6rem;
+                font-weight: bold;
+                color: var(--accent-color);
+                text-transform: uppercase;
+                margin-bottom: 0.5rem;
+                letter-spacing: 0.1em;
+            }
+            .mobile-item {
+                display: block;
+                font-size: 0.85rem;
+                color: white;
+                text-decoration: none;
+                margin-bottom: 0.3rem;
+                font-weight: 500;
+            }
+            .mobile-brand {
+                font-weight: 900;
+                font-size: 0.85rem;
+                letter-spacing: -0.02em;
+                margin-bottom: 0.5rem;
+            }
+            .mobile-name-trigger {
+                display: block;
+                font-size: 0.75rem;
+                color: white;
+                opacity: 0.8;
+                cursor: pointer;
+                border-left: 2px solid var(--accent-color);
+                padding-left: 8px;
+            }
         }
 
         /* Modal Styles */
@@ -247,12 +330,7 @@
             width: 90%;
             max-width: 400px;
             padding: 2rem;
-            transform: translateY(20px);
-            transition: transform 0.4s ease;
-        }
-
-        #modal-overlay.active .modal-content {
-            transform: translateY(0);
+            color: var(--text-color);
         }
 
         .modal-header {
@@ -265,31 +343,15 @@
         .modal-icon {
             width: 56px;
             height: 56px;
-            background-color: var(--accent-color);
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
         }
 
-        .modal-names h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.1rem;
-        }
-
-        .modal-names p {
-            font-size: 0.8rem;
-            color: var(--sub-text);
-        }
-
-        .modal-divider {
-            height: 1px;
-            background-color: var(--border-color);
-            margin: 1.2rem 0;
+        .modal-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .modal-body dl {
@@ -314,30 +376,7 @@
             font-size: 0.75rem;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
             text-decoration: underline;
-        }
-
-        /* Responsive Mobile Layout */
-        @media (max-width: 768px) {
-            body {
-                overflow-y: auto;
-            }
-            .wrapper {
-                flex-direction: column;
-                height: auto;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                padding: 3rem 2rem;
-                order: 2;
-            }
-            .visual-area {
-                width: 100%;
-                height: 40vh;
-                order: 1;
-            }
         }
 
     </style>
@@ -346,116 +385,127 @@
 
     <!-- Loading Screen -->
     <div id="loader">
-        <span>Always, Chillout</span>
+        <span>Always, Chillout.</span>
     </div>
 
     <!-- About Me Modal -->
     <div id="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-icon">S</div>
+                <div class="modal-icon">
+                    <img src="https://image.nostr.build/484c07aa35633ebd4e78fef79cb9811fb979d3bd14ff1274cbe6fa80b5914b73.png" alt="Shun Tonegawa Icon">
+                </div>
                 <div class="modal-names">
                     <h2>Shun Tonegawa</h2>
                     <p>AKA: shunature</p>
                 </div>
             </div>
-            
-            <div class="modal-divider"></div>
-
             <div class="modal-body">
                 <dl>
                     <dt>Birthday</dt>
-                    <dd>19XX / XX / XX</dd>
-                    
+                    <dd>2007 / 11 / 03</dd>
                     <dt>Location</dt>
-                    <dd>Japan</dd>
-                    
+                    <dd>Japan, Saitama, Tokyo</dd>
                     <dt>Gear</dt>
-                    <dd>MacBook Pro, iPhone, HHKB</dd>
+                    <dd>M1 Pro MacBook Pro, iPhone Air</dd>
                 </dl>
             </div>
-
             <button class="close-btn" id="modal-close">Close</button>
         </div>
     </div>
 
     <!-- Main Wrapper -->
     <div class="wrapper">
-        <!-- Sidebar -->
+        <section class="visual-area">
+                        <div class="slide active" style="background-image: url('https://media.ffnet.work/takuroff.jpg');"></div>
+                        <div class="slide" style="background-image: url('https://media.ffnet.work/PXL_20251122_090619986.jpg');"></div>
+                        <div class="slide" style="background-image: url('https://media.ffnet.work/PXL_20260112_125325168.jpg');"></div>
+        </section>
+
         <aside class="sidebar">
             <header>
                 <h1>QUICK INSTANT</h1>
                 <span class="admin-label">Admin</span>
-                <span class="shun-name-trigger" id="modal-trigger">Shun Tonegawa (shunature)</span>
+                <span class="shun-name-trigger modal-trigger-el">Shun Tonegawa (shunature)</span>
             </header>
-
             <div class="content-section">
                 <p class="section-title">Log</p>
                 <nav>
                     <ul>
-                        <li><a href="#" target="_blank" rel="noopener">Blog</a></li>
-                        <li><a href="#" target="_blank" rel="noopener">Podcast</a></li>
+                        <li><a href="#" target="_blank">Blog</a></li>
+                        <li><a href="#" target="_blank">Podcast</a></li>
                     </ul>
                 </nav>
-
                 <p class="section-title">Connect</p>
                 <nav>
                     <ul>
-                        <li><a href="#" target="_blank" rel="noopener">Signal</a></li>
-                        <li><a href="#" target="_blank" rel="noopener">Discord</a></li>
+                        <li><a href="#" target="_blank">Signal</a></li>
+                        <li><a href="#" target="_blank">Discord</a></li>
                     </ul>
                 </nav>
             </div>
-
             <footer>
                 <p>&copy; <script>document.write(new Date().getFullYear())</script> Shun Tonegawa. All rights reserved.</p>
             </footer>
         </aside>
 
-        <!-- Visual Area -->
-        <section class="visual-area">
-            <div class="hero-image"></div>
-        </section>
+        <div class="mobile-footer">
+            <div>
+                <div class="mobile-brand">QUICK INSTANT</div>
+                <div class="mobile-name-trigger modal-trigger-el">Shun Tonegawa<br>(shunature)</div>
+            </div>
+            <div>
+                <div class="mobile-col-title">Log</div>
+                <a href="#" class="mobile-item">Blog</a>
+                <a href="#" class="mobile-item">Podcast</a>
+            </div>
+            <div>
+                <div class="mobile-col-title">Connect</div>
+                <a href="#" class="mobile-item">Signal</a>
+                <a href="#" class="mobile-item">Discord</a>
+            </div>
+        </div>
     </div>
 
     <script>
         // Loader logic
         window.addEventListener('load', () => {
             const loader = document.getElementById('loader');
+            
+            // CSSのテキストアニメーション（3秒）が完了する直前に背景を消す
             setTimeout(() => {
                 loader.style.opacity = '0';
                 document.body.classList.add('loaded');
                 
-                // モバイルのみスクロール許可
-                if(window.innerWidth <= 768) {
-                    document.body.style.overflow = 'auto';
-                }
-                
+                // フェードアウト完了後に要素を削除
                 setTimeout(() => {
                     loader.style.display = 'none';
                 }, 800);
-            }, 2500);
+            }, 2600); // 3秒のアニメーション終了に合わせて調整
         });
 
+        // Slideshow logic
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 5000);
+
         // Modal Logic
-        const trigger = document.getElementById('modal-trigger');
+        const triggers = document.querySelectorAll('.modal-trigger-el');
         const overlay = document.getElementById('modal-overlay');
         const closeBtn = document.getElementById('modal-close');
 
-        trigger.addEventListener('click', () => {
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+        triggers.forEach(trigger => {
+            trigger.addEventListener('click', () => overlay.classList.add('active'));
         });
-
-        const closeModal = () => {
-            overlay.classList.remove('active');
-            if(window.innerWidth <= 768) document.body.style.overflow = 'auto';
-        };
-
+        const closeModal = () => overlay.classList.remove('active');
         closeBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) closeModal();
-        });
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
     </script>
 </body>
 </html>
