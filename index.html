@@ -35,6 +35,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--font-main); overflow: hidden; }
 
+        /* Loader */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--bg-color); display: flex; justify-content: center; align-items: center;
@@ -57,12 +58,25 @@
         .slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 2s; }
         .slide.active { opacity: 1; }
 
-        /* Compact Now Playing Style */
-        .now-playing-mini { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; opacity: 0.7; transition: 0.3s; cursor: pointer; }
-        .now-playing-mini:hover { opacity: 1; }
-        .np-visual-mini { width: 20px; height: 20px; border-radius: 2px; overflow: hidden; background: #333; flex-shrink: 0; }
+        /* Compact Now Playing Style - Integrated under name */
+        .now-playing-mini { 
+            margin-top: 0.6rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.6rem; 
+            opacity: 0.85; 
+            transition: 0.3s; 
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            width: fit-content;
+            max-width: 260px;
+        }
+        .now-playing-mini:hover { opacity: 1; background: rgba(255, 255, 255, 0.2); }
+        .np-visual-mini { width: 24px; height: 24px; border-radius: 2px; overflow: hidden; background: #333; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         .np-visual-mini img { width: 100%; height: 100%; object-fit: cover; }
-        .np-text-mini { font-size: 0.65rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+        .np-text-mini { font-size: 0.7rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         /* Sidebar Styles */
         .right-sidebar {
@@ -75,7 +89,7 @@
         .right-sidebar.active { transform: translateX(-550px); }
         .list-container { list-style: none; margin-top: 2rem; overflow-y: auto; flex-grow: 1; padding-right: 0.5rem; }
 
-        /* History List Item */
+        /* Track Item (Playlist) */
         .track-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; cursor: pointer; transition: 0.2s; }
         .track-item:hover { transform: translateX(5px); }
         .track-img { width: 44px; height: 44px; border-radius: 4px; background: #eee; flex-shrink: 0; }
@@ -120,9 +134,10 @@
                 <h1>QUICK INSTANT</h1>
                 <div onclick="openSidebar('profile-sidebar')" style="cursor: pointer;">
                     <p style="font-size: 0.9rem; font-weight: 600;">Shun Tonegawa (shunature)</p>
+                    <!-- Mini Now Playing Component under the name -->
                     <div id="np-mini" class="now-playing-mini" onclick="event.stopPropagation(); openSidebar('music-sidebar')">
                         <div class="np-visual-mini"><img id="np-img-mini" src="https://media.ffnet.work/asset/II_diagonal_Base.png"></div>
-                        <p class="np-text-mini" id="np-text-mini">Checking Last.fm...</p>
+                        <p class="np-text-mini" id="np-text-mini">Always, Chillout.</p>
                     </div>
                 </div>
             </header>
@@ -181,10 +196,12 @@
             fetchData(`${WORKER_URL}?type=podcast`, 'podcast-list', 'podcast');
             fetchRecentMusic();
             updateNowPlaying();
+            
+            // Periodically refresh music status
             setInterval(() => {
                 updateNowPlaying();
                 fetchRecentMusic();
-            }, 60000); 
+            }, 30000); 
             
             initSlideshow();
             setTimeout(() => {
@@ -202,14 +219,14 @@
                 const imgEl = document.getElementById('np-img-mini');
 
                 if (data.present) {
-                    textEl.innerText = `Listening: ${data.title}`;
+                    textEl.innerText = `${data.title} — ${data.artist}`;
                     if (data.image) imgEl.src = data.image;
                 } else {
                     textEl.innerText = "Always, Chillout.";
                     imgEl.src = "https://media.ffnet.work/asset/II_diagonal_Base.png";
                 }
             } catch (e) {
-                document.getElementById('np-text-mini').innerText = "Chillout Mode";
+                document.getElementById('np-text-mini').innerText = "Always, Chillout.";
             }
         }
 
