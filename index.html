@@ -66,7 +66,7 @@
         .main-nav {
             width: 400px; flex-shrink: 0; height: 100%; padding: 4rem 3rem;
             display: flex; flex-direction: column; justify-content: space-between;
-            background: linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 100%);
+            background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, transparent 100%);
             color: white; z-index: 20; position: absolute; left: 0;
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -76,8 +76,8 @@
         .slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 2s; }
         .slide.active { opacity: 1; }
 
-        /* Blog Sidebar View (Right) */
-        #blog-sidebar {
+        /* Sidebars (Right) */
+        .right-sidebar {
             position: fixed; top: 0; right: -500px; width: 500px; height: 100%;
             background-color: var(--sidebar-bg);
             backdrop-filter: blur(20px);
@@ -88,10 +88,10 @@
             border-left: 1px solid var(--border-color);
             box-shadow: -10px 0 30px rgba(0,0,0,0.1);
         }
-        #blog-sidebar.active { transform: translateX(-500px); }
+        .right-sidebar.active { transform: translateX(-500px); }
 
-        .blog-list { list-style: none; margin-top: 2rem; overflow-y: auto; flex-grow: 1; }
-        .blog-item {
+        .list-container { list-style: none; margin-top: 2rem; overflow-y: auto; flex-grow: 1; }
+        .list-item {
             padding: 1.5rem 0; border-bottom: 1px solid var(--border-color);
             cursor: pointer; transition: 0.3s;
             animation: fadeIn 0.5s ease forwards;
@@ -99,9 +99,11 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .blog-item:hover { transform: translateX(5px); color: var(--accent-color); }
-        .blog-date { font-size: 0.75rem; color: var(--sub-text); margin-bottom: 0.3rem; }
-        .blog-title { font-size: 1.1rem; font-weight: 700; line-height: 1.4; }
+        .list-item:hover { transform: translateX(5px); color: var(--accent-color); }
+        .item-date { font-size: 0.75rem; color: var(--sub-text); margin-bottom: 0.3rem; }
+        .item-title-wrapper { display: flex; align-items: baseline; gap: 0.8rem; }
+        .item-episode-id { font-family: monospace; font-size: 0.8rem; color: var(--accent-color); font-weight: 700; flex-shrink: 0; }
+        .item-title { font-size: 1.1rem; font-weight: 700; line-height: 1.4; }
 
         .close-sidebar {
             position: absolute; top: 2rem; right: 2rem;
@@ -123,37 +125,24 @@
         nav a:hover { color: var(--accent-color); }
         nav a:hover::after { width: 100%; }
 
-        /* Modal */
-        #modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--modal-bg); z-index: 2000;
-            display: none; justify-content: center; align-items: center;
-            backdrop-filter: blur(10px);
-        }
-        #modal-overlay.active { display: flex; }
-        .modal-content { width: 90%; max-width: 400px; padding: 2rem; color: var(--text-color); }
+        /* Profile Sidebar Specific */
+        #profile-sidebar .profile-bio { font-size: 0.95rem; margin-top: 2rem; color: var(--text-color); }
+        #profile-sidebar .profile-stats { margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 2rem; }
+        #profile-sidebar .stat-item { margin-bottom: 1.5rem; }
+        #profile-sidebar .stat-label { font-size: 0.7rem; text-transform: uppercase; color: var(--sub-text); font-weight: bold; }
+        #profile-sidebar .stat-value { font-size: 1.1rem; font-weight: 600; }
 
         /* Mobile */
         @media (max-width: 768px) {
-            .main-nav { width: 100%; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)); }
-            #blog-sidebar { width: 100%; right: -100%; }
-            #blog-sidebar.active { transform: translateX(-100%); }
+            .main-nav { width: 100%; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)); }
+            .right-sidebar { width: 100%; right: -100%; }
+            .right-sidebar.active { transform: translateX(-100%); }
         }
     </style>
 </head>
 <body>
 
     <div id="loader"><span>Always, Chillout.</span></div>
-
-    <!-- Modal -->
-    <div id="modal-overlay" onclick="toggleModal(false)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h2 style="margin-bottom: 0.5rem;">Shun Tonegawa</h2>
-            <p style="color: var(--accent-color); font-weight: bold; font-size: 0.8rem; margin-bottom: 1.5rem;">AKA: shunature</p>
-            <p style="font-size: 0.9rem; margin-bottom: 2rem;">Saitama / Tokyo / Japan<br>M1 Pro MacBook Pro</p>
-            <button onclick="toggleModal(false)" style="background: none; border: none; text-decoration: underline; cursor: pointer; color: var(--sub-text); font-size: 0.8rem;">CLOSE</button>
-        </div>
-    </div>
 
     <div class="wrapper">
         <section class="visual-area">
@@ -167,13 +156,13 @@
             <header>
                 <h1>QUICK INSTANT</h1>
                 <span class="admin-label">Admin</span>
-                <span class="shun-name-trigger" onclick="toggleModal(true)">Shun Tonegawa (shunature)</span>
+                <span class="shun-name-trigger" onclick="openSidebar('profile-sidebar')">Shun Tonegawa (shunature)</span>
             </header>
             <nav>
                 <p class="section-title">Log</p>
                 <ul>
-                    <li><a onclick="toggleBlogSidebar(true)">Blog</a></li>
-                    <li><a href="#">Podcast</a></li>
+                    <li><a onclick="openSidebar('blog-sidebar')">Blog</a></li>
+                    <li><a onclick="openSidebar('podcast-sidebar')">Podcast</a></li>
                 </ul>
                 <p class="section-title">Connect</p>
                 <ul>
@@ -186,30 +175,65 @@
             </footer>
         </aside>
 
-        <!-- Right Blog Sidebar View -->
-        <div id="blog-sidebar">
-            <span class="close-sidebar" onclick="toggleBlogSidebar(false)">Close —</span>
+        <!-- Profile Sidebar -->
+        <div id="profile-sidebar" class="right-sidebar">
+            <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
+            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem;">Shun Tonegawa</h2>
+            <p style="color: var(--accent-color); font-weight: bold; font-size: 0.8rem;">AKA: shunature</p>
+            
+            <div class="profile-bio">
+                <p>埼玉と東京を拠点に活動するクリエイター。<br>
+                    デジタルとアナログの境界を探究し、常に新しい表現の形を模索しています。</p>
+            </div>
+
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Location</div>
+                    <div class="stat-value">Saitama / Tokyo / Japan</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Main Tool</div>
+                    <div class="stat-value">M1 Pro MacBook Pro</div>
+                    <div class="stat-value">iPhone Air</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Favorite</div>
+                    <div class="stat-value">Coffee / Photography / Tech / Music</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Sidebar -->
+        <div id="blog-sidebar" class="right-sidebar">
+            <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">Log / Blog</h2>
             <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">Notionで綴る、思考の果て。</p>
-            
-            <ul id="notion-blog-list" class="blog-list">
-                <li class="blog-item" style="cursor: default; opacity: 0.5;">Loading latest posts...</li>
+            <ul id="notion-blog-list" class="list-container">
+                <li class="list-item" style="cursor: default; opacity: 0.5;">Loading posts...</li>
             </ul>
+        </div>
 
-            <div style="margin-top: auto; padding-top: 2rem; border-top: 1px solid var(--border-color);">
-                <!-- 実際のDB IDに合わせてリンクも更新 -->
-                <a href="https://www.notion.so/3014a21752398028baec000b4570b782" target="_blank" style="font-size: 0.75rem; color: var(--accent-color); text-decoration: none; font-weight: bold;">VIEW ALL ON NOTION →</a>
-            </div>
+        <!-- Podcast Sidebar -->
+        <div id="podcast-sidebar" class="right-sidebar">
+            <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
+            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">QI -Voices-</h2>
+            <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">Acoustic Stellar — 思考を声に乗せて。</p>
+            <ul id="podcast-list" class="list-container">
+                <li class="list-item" style="cursor: default; opacity: 0.5;">Loading latest episodes...</li>
+            </ul>
         </div>
     </div>
 
     <script>
-        // --- Cloudflare WorkerのURL ---
-        const WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/";
+        // --- 設定 ---
+        const BLOG_WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/"; 
+        const PODCAST_WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/?type=podcast"; 
 
         window.addEventListener('load', () => {
-            fetchLatestPosts();
-
+            fetchData(BLOG_WORKER_URL, 'notion-blog-list');
+            fetchData(PODCAST_WORKER_URL, 'podcast-list', true); // ポッドキャストのみ話数を表示
+            initSlideshow();
+            
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
                 document.body.classList.add('loaded');
@@ -217,88 +241,72 @@
             }, 2500);
         });
 
-        // Notion Workerから最新記事を取得
-        async function fetchLatestPosts() {
-            const listEl = document.getElementById('notion-blog-list');
-            
+        // 汎用データ取得関数
+        async function fetchData(url, elementId, isPodcast = false) {
+            const listEl = document.getElementById(elementId);
             try {
-                if (!WORKER_URL.startsWith('http')) {
-                    throw new Error('WORKER_URLが設定されていません。');
-                }
+                const response = await fetch(url);
+                const data = await response.json();
 
-                const response = await fetch(WORKER_URL, {
-                    method: 'GET',
-                    mode: 'cors'
-                });
-
-                const textData = await response.text();
-                let data;
+                if (!response.ok) throw new Error(data.error || 'Fetch failed');
                 
-                try {
-                    data = JSON.parse(textData);
-                } catch(e) {
-                    throw new Error(`Invalid JSON from Worker: ${textData.substring(0, 100)}`);
-                }
-
-                if (!response.ok) {
-                    throw new Error(data.error || `Worker Error ${response.status}`);
-                }
-
-                // データの最終チェック
-                if (!data || !Array.isArray(data)) {
-                    throw new Error('Workerから返されたデータが配列ではありません。');
-                }
-
                 if (data.length === 0) {
-                    listEl.innerHTML = '<li class="blog-item" style="cursor:default">No public posts found.</li>';
+                    listEl.innerHTML = '<li class="list-item" style="cursor:default">No items found.</li>';
                     return;
                 }
 
-                listEl.innerHTML = data.map((post, index) => `
-                    <li class="blog-item" style="animation-delay: ${index * 0.1}s" onclick="window.open('${post.url || '#'}', '_blank')">
-                        <div class="blog-date">${(post.date || '').replace(/-/g, '.')}</div>
-                        <div class="blog-title">${post.title || 'Untitled'}</div>
-                    </li>
-                `).join('');
+                listEl.innerHTML = data.map((item, index) => {
+                    // 話数のフォーマット（例: 1 -> #001）
+                    let formattedId = "";
+                    if (isPodcast && item.episodeId !== undefined && item.episodeId !== "") {
+                        formattedId = String(item.episodeId).padStart(3, '0');
+                        formattedId = `#${formattedId}`;
+                    }
+
+                    return `
+                        <li class="list-item" style="animation-delay: ${index * 0.1}s" onclick="window.open('${item.url || '#'}', '_blank')">
+                            <div class="item-date">${(item.date || '').replace(/-/g, '.')}</div>
+                            <div class="item-title-wrapper">
+                                ${formattedId ? `<span class="item-episode-id">${formattedId}</span>` : ''}
+                                <div class="item-title">${item.title || 'Untitled'}</div>
+                            </div>
+                        </li>
+                    `;
+                }).join('');
 
             } catch (error) {
-                console.error('Fetch Error:', error);
-                listEl.innerHTML = `<li class="blog-item" style="cursor:default; border-bottom: none;">
-                    <div style="color: #ff4444; font-weight: bold; font-size: 0.9rem;">Worker Sync Error</div>
-                    <div style="font-size: 0.7rem; opacity: 0.7; margin-top: 0.5rem; line-height: 1.4;">
-                        ${error.message}<br><br>
-                        <strong>次に試すべきこと:</strong><br>
-                        1. Worker内の <code>NOTION_DB_ID</code> を <code>3014a21752398028baec000b4570b782</code> に設定してください。<br>
-                        2. データベースをインテグレーションに共有（Connect）してください。
-                    </div>
+                listEl.innerHTML = `<li class="list-item" style="cursor:default; color:#ff4444; border:none; font-size:0.8rem;">
+                    Sync Error: ${error.message}
                 </li>`;
             }
         }
 
-        // Sidebar Toggle
-        function toggleBlogSidebar(show) {
-            const sidebar = document.getElementById('blog-sidebar');
-            if (show) {
-                sidebar.classList.add('active');
-            } else {
-                sidebar.classList.remove('active');
+        // Sidebar Management
+        function openSidebar(id) {
+            closeSidebars();
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeSidebars() {
+            document.querySelectorAll('.right-sidebar').forEach(s => s.classList.remove('active'));
+        }
+
+        // Background Slideshow
+        function initSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+            if (slides.length > 0) {
+                setInterval(() => {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }, 5000);
             }
         }
 
-        // Slideshow
-        const slides = document.querySelectorAll('.slide');
-        let currentSlide = 0;
-        if (slides.length > 0) {
-            setInterval(() => {
-                slides[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add('active');
-            }, 5000);
-        }
-
-        function toggleModal(show) {
-            document.getElementById('modal-overlay').classList.toggle('active', show);
-        }
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSidebars();
+        });
     </script>
 </body>
 </html>
