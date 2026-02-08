@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QUICK INSTANT</title>
 
-    <!-- Favicon & OGP Settings -->
     <link rel="icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png" type="image/png">
     <link rel="apple-touch-icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png">
     <meta property="og:title" content="QUICK INSTANT">
@@ -36,7 +35,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--font-main); overflow: hidden; }
 
-        /* Loader */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--bg-color); display: flex; justify-content: center; align-items: center;
@@ -45,7 +43,6 @@
         #loader span { font-size: 8vw; font-weight: 900; animation: loaderTextAnim 3s ease-in-out forwards; }
         @keyframes loaderTextAnim { 0%, 20% { opacity: 0; } 40%, 80% { opacity: 1; } 100% { opacity: 0; } }
 
-        /* Main Layout */
         .wrapper { display: flex; width: 100%; height: 100vh; opacity: 0; transition: opacity 1.2s ease; position: relative; }
         .loaded .wrapper { opacity: 1; }
 
@@ -60,7 +57,14 @@
         .slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 2s; }
         .slide.active { opacity: 1; }
 
-        /* Sidebars */
+        /* Compact Now Playing Style */
+        .now-playing-mini { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; opacity: 0.7; transition: 0.3s; cursor: pointer; }
+        .now-playing-mini:hover { opacity: 1; }
+        .np-visual-mini { width: 20px; height: 20px; border-radius: 2px; overflow: hidden; background: #333; flex-shrink: 0; }
+        .np-visual-mini img { width: 100%; height: 100%; object-fit: cover; }
+        .np-text-mini { font-size: 0.65rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+
+        /* Sidebar Styles */
         .right-sidebar {
             position: fixed; top: 0; right: -550px; width: 550px; height: 100%;
             background-color: var(--sidebar-bg); backdrop-filter: blur(20px);
@@ -69,41 +73,29 @@
             border-left: 1px solid var(--border-color);
         }
         .right-sidebar.active { transform: translateX(-550px); }
-
         .list-container { list-style: none; margin-top: 2rem; overflow-y: auto; flex-grow: 1; padding-right: 0.5rem; }
-        
-        /* Standard List Item (Blog/Podcast) */
-        .list-item {
-            padding: 1.5rem 0; border-bottom: 1px solid var(--border-color);
-            cursor: pointer; transition: 0.3s; opacity: 0; animation: fadeIn 0.5s ease forwards;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .list-item:hover { color: var(--accent-color); }
-        .item-date { font-size: 0.75rem; color: var(--sub-text); margin-bottom: 0.3rem; }
-        .item-title { font-size: 1.1rem; font-weight: 700; line-height: 1.4; }
 
-        /* Gallery Grid Item */
-        .gallery-item {
-            margin-bottom: 3rem; cursor: pointer; opacity: 0; animation: fadeIn 0.5s ease forwards;
-        }
-        .gallery-image-wrapper {
-            width: 100%; aspect-ratio: 16/9; overflow: hidden; border-radius: 4px; background-color: #eee; margin-bottom: 1rem;
-        }
-        .gallery-image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
-        .gallery-item:hover img { transform: scale(1.05); }
-        .gallery-info { padding: 0 0.2rem; }
-        .gallery-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.2rem; }
-        .gallery-location { font-size: 0.75rem; color: var(--sub-text); text-transform: uppercase; letter-spacing: 0.1em; }
+        /* History List Item */
+        .track-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; cursor: pointer; transition: 0.2s; }
+        .track-item:hover { transform: translateX(5px); }
+        .track-img { width: 44px; height: 44px; border-radius: 4px; background: #eee; flex-shrink: 0; }
+        .track-info { flex: 1; overflow: hidden; }
+        .track-name { font-size: 0.9rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-color); }
+        .track-artist { font-size: 0.75rem; color: var(--sub-text); }
+        .nowplaying-indicator { font-size: 0.6rem; color: var(--accent-color); font-weight: bold; text-transform: uppercase; }
 
         .close-sidebar { position: absolute; top: 2rem; right: 2rem; cursor: pointer; font-size: 0.8rem; font-weight: bold; color: var(--sub-text); text-transform: uppercase; }
-
-        /* Nav Typography */
         h1 { font-size: 2.2rem; font-weight: 900; color: white; margin-bottom: 2rem; }
         .section-title { font-size: 0.7rem; font-weight: bold; color: var(--accent-color); margin-top: 2rem; margin-bottom: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em; }
         nav ul { list-style: none; }
         nav li { margin-bottom: 0.8rem; }
         nav a { text-decoration: none; color: white; font-size: 1.2rem; font-weight: 500; transition: 0.3s; cursor: pointer; display: inline-block; }
         nav a:hover { color: var(--accent-color); transform: translateX(5px); }
+
+        .list-item { margin-bottom: 1.5rem; cursor: pointer; animation: fadeIn 0.5s ease forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .item-date { font-size: 0.7rem; color: var(--sub-text); font-weight: bold; margin-bottom: 0.2rem; }
+        .item-title { font-size: 1.1rem; font-weight: 700; color: var(--text-color); }
 
         @media (max-width: 768px) {
             .main-nav { width: 100%; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)); }
@@ -126,18 +118,24 @@
         <aside class="main-nav">
             <header>
                 <h1>QUICK INSTANT</h1>
-                <p style="font-size: 0.9rem; font-weight: 600; cursor: pointer;" onclick="openSidebar('profile-sidebar')">Shun Tonegawa (shunature)</p>
+                <div onclick="openSidebar('profile-sidebar')" style="cursor: pointer;">
+                    <p style="font-size: 0.9rem; font-weight: 600;">Shun Tonegawa (shunature)</p>
+                    <div id="np-mini" class="now-playing-mini" onclick="event.stopPropagation(); openSidebar('music-sidebar')">
+                        <div class="np-visual-mini"><img id="np-img-mini" src="https://media.ffnet.work/asset/II_diagonal_Base.png"></div>
+                        <p class="np-text-mini" id="np-text-mini">Checking Last.fm...</p>
+                    </div>
+                </div>
             </header>
             <nav>
                 <p class="section-title">Log</p>
                 <ul>
                     <li><a onclick="openSidebar('blog-sidebar')">Blog</a></li>
                     <li><a onclick="openSidebar('podcast-sidebar')">Podcast</a></li>
-                    <li><a onclick="openSidebar('gallery-sidebar')">Gallery</a></li>
+                    <li><a onclick="openSidebar('music-sidebar')">Playlist</a></li>
                 </ul>
                 <p class="section-title">Connect</p>
                 <ul>
-                    <li><a href="https://signal.me/#p/+818073531103" target="_blank">Signal</a></li>
+                    <li><a href="https://signal.me/#eu/Lupvn1ZUzkWiUdNHo7AhNnU4OH7fw51aGu7EdCnJNVIfV2NFPRRJKI9kNw-_Br-F" target="_blank">Signal</a></li>
                     <li><a href="https://discord.com/users/1469961720997875745" target="_blank">Discord</a></li>
                     <li><a href="https://understood-helmet-14b.notion.site/3014a217523980dca309f5381d12bb16?pvs=105" target="_blank">Message Box</a></li>
                 </ul>
@@ -148,50 +146,30 @@
         </aside>
 
         <!-- Sidebar Components -->
+        <div id="music-sidebar" class="right-sidebar">
+            <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
+            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem;">Playlist</h2>
+            <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">Recently played tracks via Last.fm.</p>
+            <div id="music-list" class="list-container"></div>
+        </div>
+
         <div id="profile-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem;">Shun Tonegawa</h2>
             <p style="color: var(--accent-color); font-weight: bold; font-size: 0.8rem;">AKA: shunature</p>
-            
-            <div class="profile-bio">
-                <p>埼玉と東京を拠点に活動するクリエイター。<br>
-                    デジタルとアナログの境界を探究し、常に新しい表現の形を模索しています。</p>
-            </div>
-
-            <div class="profile-stats">
-                <div class="stat-item">
-                    <div class="stat-label">Location</div>
-                    <div class="stat-value">Saitama / Tokyo / Japan</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">Main Tool</div>
-                    <div class="stat-value">M1 Pro MacBook Pro</div>
-                    <div class="stat-value">iPhone Air</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">Favorite</div>
-                    <div class="stat-value">Coffee / Photography / Tech / Music</div>
-                </div>
-            </div>
+            <p style="margin-top:1.5rem;">埼玉と東京を拠点に活動するクリエイター。</p>
         </div>
 
         <div id="blog-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
-            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">Blog</h2>
+            <h2 style="font-size:2rem;font-weight:900;">Blog</h2>
             <ul id="notion-blog-list" class="list-container"></ul>
         </div>
 
         <div id="podcast-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
-            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">Voices</h2>
+            <h2 style="font-size:2rem;font-weight:900;">Voices</h2>
             <ul id="podcast-list" class="list-container"></ul>
-        </div>
-
-        <div id="gallery-sidebar" class="right-sidebar">
-            <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
-            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">Fragments</h2>
-            <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">光の記録。</p>
-            <div id="gallery-list" class="list-container"></div>
         </div>
     </div>
 
@@ -201,7 +179,13 @@
         window.addEventListener('load', () => {
             fetchData(`${WORKER_URL}`, 'notion-blog-list');
             fetchData(`${WORKER_URL}?type=podcast`, 'podcast-list', 'podcast');
-            fetchData(`${WORKER_URL}?type=gallery`, 'gallery-list', 'gallery');
+            fetchRecentMusic();
+            updateNowPlaying();
+            setInterval(() => {
+                updateNowPlaying();
+                fetchRecentMusic();
+            }, 60000); 
+            
             initSlideshow();
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
@@ -210,51 +194,57 @@
             }, 2000);
         });
 
+        async function updateNowPlaying() {
+            try {
+                const res = await fetch(`${WORKER_URL}?type=nowplaying`);
+                const data = await res.json();
+                const textEl = document.getElementById('np-text-mini');
+                const imgEl = document.getElementById('np-img-mini');
+
+                if (data.present) {
+                    textEl.innerText = `Listening: ${data.title}`;
+                    if (data.image) imgEl.src = data.image;
+                } else {
+                    textEl.innerText = "Always, Chillout.";
+                    imgEl.src = "https://media.ffnet.work/asset/II_diagonal_Base.png";
+                }
+            } catch (e) {
+                document.getElementById('np-text-mini').innerText = "Chillout Mode";
+            }
+        }
+
+        async function fetchRecentMusic() {
+            const listEl = document.getElementById('music-list');
+            try {
+                const res = await fetch(`${WORKER_URL}?type=recent`);
+                const data = await res.json();
+                listEl.innerHTML = data.map((track, index) => `
+                    <div class="track-item" style="animation-delay:${index * 0.05}s" onclick="window.open('${track.url}','_blank')">
+                        <img class="track-img" src="${track.image || 'https://media.ffnet.work/asset/II_diagonal_Base.png'}" loading="lazy">
+                        <div class="track-info">
+                            ${track.nowplaying ? '<div class="nowplaying-indicator">Now Playing</div>' : ''}
+                            <div class="track-name">${track.title}</div>
+                            <div class="track-artist">${track.artist}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) { listEl.innerHTML = '<p>Connection Error</p>'; }
+        }
+
         async function fetchData(url, elementId, type = 'blog') {
             const listEl = document.getElementById(elementId);
             try {
                 const response = await fetch(url);
                 const data = await response.json();
-                if (!response.ok) throw new Error(data.error);
-                
                 listEl.innerHTML = data.map((item, index) => {
                     const delay = index * 0.1;
-                    
-                    if (type === 'gallery') {
-                        // Gallery Layout: Image + Title + Location
-                        return `
-                            <div class="gallery-item" style="animation-delay: ${delay}s" onclick="window.open('${item.url}', '_blank')">
-                                <div class="gallery-image-wrapper">
-                                    <img src="${item.image || 'https://via.placeholder.com/800x450?text=No+Image'}" alt="${item.title}" loading="lazy">
-                                </div>
-                                <div class="gallery-info">
-                                    <div class="gallery-title">${item.title}</div>
-                                    <div class="gallery-location">${item.location || 'Unknown Location'}</div>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        // Standard List Layout
-                        return `
-                            <li class="list-item" style="animation-delay: ${delay}s" onclick="window.open('${item.url}', '_blank')">
-                                <div class="item-date">${(item.date || '').replace(/-/g, '.')}</div>
-                                <div class="item-title">${item.title}</div>
-                            </li>
-                        `;
-                    }
+                    return `<li class="list-item" style="animation-delay:${delay}s" onclick="window.open('${item.url}','_blank')"><div class="item-date">${(item.date || '').replace(/-/g, '.')}</div><div class="item-title">${item.title}</div></li>`;
                 }).join('');
-            } catch (error) {
-                listEl.innerHTML = `<p style="font-size:0.8rem;color:red">Sync Error</p>`;
-            }
+            } catch (error) { listEl.innerHTML = `<p>Sync Error</p>`; }
         }
 
-        function openSidebar(id) {
-            closeSidebars();
-            document.getElementById(id).classList.add('active');
-        }
-        function closeSidebars() {
-            document.querySelectorAll('.right-sidebar').forEach(s => s.classList.remove('active'));
-        }
+        function openSidebar(id) { closeSidebars(); document.getElementById(id).classList.add('active'); }
+        function closeSidebars() { document.querySelectorAll('.right-sidebar').forEach(s => s.classList.remove('active')); }
         function initSlideshow() {
             const slides = document.querySelectorAll('.slide');
             let current = 0;
