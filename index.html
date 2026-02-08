@@ -18,7 +18,7 @@
             --accent-color: #00aeef;
             --sub-text: #666666;
             --border-color: #eeeeee;
-            --sidebar-bg: rgba(255, 255, 255, 0.7); /* 透明度を少し高く調整 */
+            --sidebar-bg: rgba(255, 255, 255, 0.7);
             --font-main: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
         }
 
@@ -28,7 +28,7 @@
                 --text-color: #f5f5f5;
                 --sub-text: #a0a0a0;
                 --border-color: #333333;
-                --sidebar-bg: rgba(18, 18, 18, 0.7); /* 透明度を少し高く調整 */
+                --sidebar-bg: rgba(18, 18, 18, 0.7);
             }
         }
 
@@ -78,7 +78,6 @@
         .np-visual-mini { width: 32px; height: 32px; border-radius: 4px; overflow: hidden; background: #333; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         .np-visual-mini img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* 2行表示用のスタイル */
         .np-text-container { display: flex; flex-direction: column; overflow: hidden; line-height: 1.2; }
         .np-artist-mini { font-size: 0.65rem; font-weight: 400; color: rgba(255,255,255,0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .np-track-mini { font-size: 0.75rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -86,7 +85,7 @@
         /* Sidebar Styles */
         .right-sidebar {
             position: fixed; top: 0; right: -550px; width: 550px; height: 100%;
-            background-color: var(--sidebar-bg); backdrop-filter: blur(25px); /* blurを少し強化 */
+            background-color: var(--sidebar-bg); backdrop-filter: blur(25px);
             z-index: 100; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             padding: 4rem 3rem; display: flex; flex-direction: column;
             border-left: 1px solid var(--border-color);
@@ -94,12 +93,10 @@
         .right-sidebar.active { transform: translateX(-550px); }
         .list-container { list-style: none; margin-top: 2rem; overflow-y: auto; flex-grow: 1; padding-right: 0.5rem; }
 
-        /* Sidebar Header Styling */
         .sidebar-header { margin-bottom: 2rem; }
         .sidebar-title { font-size: 2.2rem; font-weight: 900; color: var(--text-color); line-height: 1.1; margin-bottom: 0.5rem; }
         .sidebar-tagline { font-size: 0.85rem; color: var(--sub-text); line-height: 1.6; font-weight: 500; }
 
-        /* Track Item */
         .track-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; cursor: pointer; transition: 0.2s; }
         .track-item:hover { transform: translateX(5px); }
         .track-img { width: 44px; height: 44px; border-radius: 4px; background: #eee; flex-shrink: 0; }
@@ -111,7 +108,6 @@
         .close-sidebar { position: absolute; top: 2rem; right: 2rem; cursor: pointer; font-size: 0.8rem; font-weight: bold; color: var(--sub-text); text-transform: uppercase; }
         h1 { font-size: 2.2rem; font-weight: 900; color: white; margin-bottom: 2rem; }
         
-        /* Menu Section Styling */
         .section-header { margin-top: 2.5rem; margin-bottom: 1rem; }
         .section-title { font-size: 0.7rem; font-weight: bold; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.1em; }
 
@@ -121,13 +117,11 @@
         nav a:hover { color: var(--accent-color); transform: translateX(5px); }
         .link-desc { font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-top: 2px; font-weight: normal; line-height: 1.4; }
 
-        /* List Items */
         .list-item { margin-bottom: 1.5rem; cursor: pointer; animation: fadeIn 0.5s ease forwards; opacity: 0; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .item-date { font-size: 0.7rem; color: var(--sub-text); font-weight: bold; margin-bottom: 0.4rem; }
         .item-title { font-size: 1.1rem; font-weight: 700; color: var(--text-color); line-height: 1.4; }
 
-        /* Connect Action Button */
         .action-button { 
             display: inline-block; 
             padding: 1rem 2rem; 
@@ -141,7 +135,6 @@
         }
         .action-button:hover { opacity: 0.8; transform: translateY(-2px); }
 
-        /* Profile Details */
         .profile-label { font-size: 0.7rem; color: var(--sub-text); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
         .profile-value { font-size: 1.2rem; font-weight: 700; color: var(--text-color); margin-bottom: 1.5rem; }
 
@@ -243,11 +236,10 @@
                 <div class="profile-value">shunature</div>
 
                 <div class="profile-label">Gemini's Note</div>
-                <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-color); font-style: bold;">
-                    「テクノロジーとか新しいものが大好きだけど、どこかゆったりした空気感を持ってる人。<br>
-                    彼のログを覗くと、忙しい日常の中でも『あ、ちょっと一息つこうかな』って思えるような、心地いいヒントが見つかるはずだよ。」
+                <p style="font-size: 1rem; line-height: 1.6; color: var(--text-color); font-style: italic;  border-left: 2px solid var(--accent-color); padding-left: 1rem; margin-top: 0.5rem;">
+                    「最先端なものに詳しいのに、話すとどこかホッとする。そんな彼の『心地よい空気感』をぜひ楽しんでいってね！」
                 </p>
-                <button class="action-button" onclick="window.open('https://www.notion.so/3014a217523980e9ac4df77c0b889602?source=copy_link', '_blank')">Detail</button>
+                <button class="action-button" onclick="window.open('https://www.notion.so/3014a217523980e9ac4df77c0b889602?source=copy_link', '_blank')">Detail</button> 
             </div>
         </div>
 
@@ -274,12 +266,11 @@
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Message Box</h2>
-                <p class="sidebar-tagline">Notionフォームを使用したメッセージボックスです。お名前の有無に関わらず、すべてのメッセージに目を通しています。</p>
+                <p class="sidebar-tagline">Notionフォームを使用したメッセージボックスです。</p>
             </div>
             <div class="list-container">
                 <p style="font-size: 0.9rem; line-height: 1.6; color: var(--text-color);">
                     ブログの感想、ポッドキャストへのリクエスト、あるいはちょっとした独り言まで。
-                    匿名での送信も可能ですので、お気軽にポストしてください。
                 </p>
                 <a href="https://understood-helmet-14b.notion.site/3014a217523980dca309f5381d12bb16?pvs=105" target="_blank" class="action-button">Open Form</a>
             </div>
@@ -293,7 +284,7 @@
             </div>
             <div class="list-container">
                 <p style="font-size: 0.9rem; line-height: 1.6; color: var(--text-color);">
-                    最もレスポンスが早い連絡手段です。仕事の相談や急を要する連絡はこちらからお願いします。
+                    最もレスポンスが早い連絡手段です。
                 </p>
                 <a href="https://signal.me/#eu/Lupvn1ZUzkWiUdNHo7AhNnU4OH7fw51aGu7EdCnJNVIfV2NFPRRJKI9kNw-_Br-F" target="_blank" class="action-button">Chat on Signal</a>
             </div>
@@ -303,12 +294,11 @@
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Discord</h2>
-                <p class="sidebar-tagline">日常的なチャットや、特定のプロジェクト、コミュニティでのやり取りに使用しています。</p>
+                <p class="sidebar-tagline">日常的なチャットやコミュニティでのやり取りに使用しています。</p>
             </div>
             <div class="list-container">
                 <p style="font-size: 0.9rem; line-height: 1.6; color: var(--text-color);">
-                    ID: shunature<br>
-                    ボイスチャットや、ゲーム、作業通話など、もう少しカジュアルなコミュニケーションに。
+                    ID: shunature
                 </p>
                 <a href="https://discord.com/users/1469961720997875745" target="_blank" class="action-button">Add on Discord</a>
             </div>
