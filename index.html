@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QUICK INSTANT</title>
+
+    <!-- 1. Favicon Settings -->
+    <link rel="icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png">
+
+    <!-- 2. OGP / SNS Settings -->
+    <meta property="og:title" content="QUICK INSTANT">
+    <meta property="og:description" content="Always, Chillout. Shun Tonegawa's Personal Log & Podcast.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ffnet.work">
+    <meta property="og:image" content="https://media.ffnet.work/asset/II_diagonal_Base.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="QUICK INSTANT">
+    <meta name="twitter:description" content="Always, Chillout.">
+    <meta name="twitter:image" content="https://media.ffnet.work/asset/II_diagonal_Base.png">
+
     <style>
         :root {
             --bg-color: #ffffff;
@@ -166,7 +182,7 @@
                 </ul>
                 <p class="section-title">Connect</p>
                 <ul>
-                    <li><a href="https://signal.me/#eu/Lupvn1ZUzkWiUdNHo7AhNnU4OH7fw51aGu7EdCnJNVIfV2NFPRRJKI9kNw-_Br-F" target="_blank">Signal</a></li>
+                    <li><a href="https://signal.me/#p/+818073531103" target="_blank">Signal</a></li>
                     <li><a href="https://discord.com/users/1469961720997875745" target="_blank">Discord</a></li>
                 </ul>
             </nav>
@@ -182,7 +198,7 @@
             <p style="color: var(--accent-color); font-weight: bold; font-size: 0.8rem;">AKA: shunature</p>
             
             <div class="profile-bio">
-                <p>埼玉と東京を拠点に活動するクリエイター<br>
+                <p>埼玉と東京を拠点に活動するクリエイター。<br>
                     デジタルとアナログの境界を探究し、常に新しい表現の形を模索しています。</p>
             </div>
 
@@ -217,7 +233,7 @@
         <div id="podcast-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">QI -Voices-</h2>
-            <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">声で届ける、思考の果て。</p>
+            <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">Acoustic Stellar — 思考を声に乗せて。</p>
             <ul id="podcast-list" class="list-container">
                 <li class="list-item" style="cursor: default; opacity: 0.5;">Loading latest episodes...</li>
             </ul>
@@ -226,12 +242,11 @@
 
     <script>
         // --- 設定 ---
-        const BLOG_WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/"; 
-        const PODCAST_WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/?type=podcast"; 
+        const UNIFIED_WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/"; 
 
         window.addEventListener('load', () => {
-            fetchData(BLOG_WORKER_URL, 'notion-blog-list');
-            fetchData(PODCAST_WORKER_URL, 'podcast-list', true); // ポッドキャストのみ話数を表示
+            fetchData(`${UNIFIED_WORKER_URL}`, 'notion-blog-list');
+            fetchData(`${UNIFIED_WORKER_URL}?type=podcast`, 'podcast-list', true); 
             initSlideshow();
             
             setTimeout(() => {
@@ -241,7 +256,6 @@
             }, 2500);
         });
 
-        // 汎用データ取得関数
         async function fetchData(url, elementId, isPodcast = false) {
             const listEl = document.getElementById(elementId);
             try {
@@ -256,7 +270,6 @@
                 }
 
                 listEl.innerHTML = data.map((item, index) => {
-                    // 話数のフォーマット（例: 1 -> #001）
                     let formattedId = "";
                     if (isPodcast && item.episodeId !== undefined && item.episodeId !== "") {
                         formattedId = String(item.episodeId).padStart(3, '0');
@@ -281,7 +294,6 @@
             }
         }
 
-        // Sidebar Management
         function openSidebar(id) {
             closeSidebars();
             document.getElementById(id).classList.add('active');
@@ -291,7 +303,6 @@
             document.querySelectorAll('.right-sidebar').forEach(s => s.classList.remove('active'));
         }
 
-        // Background Slideshow
         function initSlideshow() {
             const slides = document.querySelectorAll('.slide');
             let currentSlide = 0;
