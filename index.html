@@ -5,20 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QUICK INSTANT</title>
 
-    <!-- 1. Favicon Settings -->
+    <!-- Favicon & OGP Settings -->
     <link rel="icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png" type="image/png">
     <link rel="apple-touch-icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png">
-
-    <!-- 2. OGP / SNS Settings -->
     <meta property="og:title" content="QUICK INSTANT">
-    <meta property="og:description" content="Always, Chillout. Shun Tonegawa's Personal Log & Podcast.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ffnet.work">
+    <meta property="og:description" content="Always, Chillout. Shun Tonegawa's Personal Log.">
     <meta property="og:image" content="https://media.ffnet.work/asset/II_diagonal_Base.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="QUICK INSTANT">
-    <meta name="twitter:description" content="Always, Chillout.">
-    <meta name="twitter:image" content="https://media.ffnet.work/asset/II_diagonal_Base.png">
 
     <style>
         :root {
@@ -26,7 +18,6 @@
             --text-color: #1a1a1a;
             --accent-color: #00aeef;
             --sub-text: #666666;
-            --modal-bg: rgba(255, 255, 255, 0.95);
             --border-color: #eeeeee;
             --sidebar-bg: rgba(255, 255, 255, 0.9);
             --font-main: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
@@ -37,118 +28,83 @@
                 --bg-color: #121212;
                 --text-color: #f5f5f5;
                 --sub-text: #a0a0a0;
-                --modal-bg: rgba(18, 18, 18, 0.98);
                 --border-color: #333333;
                 --sidebar-bg: rgba(18, 18, 18, 0.9);
             }
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--font-main); overflow: hidden; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-main);
-            line-height: 1.6;
-            overflow: hidden;
-        }
-
-        /* Loading Animation */
+        /* Loader */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg-color);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 3000; opacity: 1; transition: opacity 0.8s ease;
+            background-color: var(--bg-color); display: flex; justify-content: center; align-items: center;
+            z-index: 3000; transition: opacity 0.8s ease;
         }
-        #loader span {
-            font-size: 8vw; font-weight: 900; text-transform: uppercase;
-            animation: loaderTextAnim 3s ease-in-out forwards;
-        }
-        @keyframes loaderTextAnim {
-            0%, 20% { opacity: 0; transform: scale(0.95); }
-            40%, 80% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(1.1); }
-        }
+        #loader span { font-size: 8vw; font-weight: 900; animation: loaderTextAnim 3s ease-in-out forwards; }
+        @keyframes loaderTextAnim { 0%, 20% { opacity: 0; } 40%, 80% { opacity: 1; } 100% { opacity: 0; } }
 
-        /* Layout */
-        .wrapper {
-            display: flex; width: 100%; height: 100vh;
-            opacity: 0; transition: opacity 1.2s ease;
-            position: relative;
-        }
+        /* Main Layout */
+        .wrapper { display: flex; width: 100%; height: 100vh; opacity: 0; transition: opacity 1.2s ease; position: relative; }
         .loaded .wrapper { opacity: 1; }
 
-        /* Main Sidebar (Left) */
         .main-nav {
-            width: 400px; flex-shrink: 0; height: 100%; padding: 4rem 3rem;
+            width: 400px; height: 100%; padding: 4rem 3rem;
             display: flex; flex-direction: column; justify-content: space-between;
             background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, transparent 100%);
             color: white; z-index: 20; position: absolute; left: 0;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Visual Area */
         .visual-area { width: 100%; height: 100%; position: absolute; background-color: #000; z-index: 10; }
         .slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 2s; }
         .slide.active { opacity: 1; }
 
-        /* Sidebars (Right) */
+        /* Sidebars */
         .right-sidebar {
-            position: fixed; top: 0; right: -500px; width: 500px; height: 100%;
-            background-color: var(--sidebar-bg);
-            backdrop-filter: blur(20px);
-            z-index: 100;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            padding: 4rem 3rem;
-            display: flex; flex-direction: column;
+            position: fixed; top: 0; right: -550px; width: 550px; height: 100%;
+            background-color: var(--sidebar-bg); backdrop-filter: blur(20px);
+            z-index: 100; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 4rem 3rem; display: flex; flex-direction: column;
             border-left: 1px solid var(--border-color);
-            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
         }
-        .right-sidebar.active { transform: translateX(-500px); }
+        .right-sidebar.active { transform: translateX(-550px); }
 
-        .list-container { list-style: none; margin-top: 2rem; overflow-y: auto; flex-grow: 1; }
+        .list-container { list-style: none; margin-top: 2rem; overflow-y: auto; flex-grow: 1; padding-right: 0.5rem; }
+        
+        /* Standard List Item (Blog/Podcast) */
         .list-item {
             padding: 1.5rem 0; border-bottom: 1px solid var(--border-color);
-            cursor: pointer; transition: 0.3s;
-            animation: fadeIn 0.5s ease forwards;
-            opacity: 0;
+            cursor: pointer; transition: 0.3s; opacity: 0; animation: fadeIn 0.5s ease forwards;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .list-item:hover { transform: translateX(5px); color: var(--accent-color); }
+        .list-item:hover { color: var(--accent-color); }
         .item-date { font-size: 0.75rem; color: var(--sub-text); margin-bottom: 0.3rem; }
-        .item-title-wrapper { display: flex; align-items: baseline; gap: 0.8rem; }
-        .item-episode-id { font-family: monospace; font-size: 0.8rem; color: var(--accent-color); font-weight: 700; flex-shrink: 0; }
         .item-title { font-size: 1.1rem; font-weight: 700; line-height: 1.4; }
 
-        .close-sidebar {
-            position: absolute; top: 2rem; right: 2rem;
-            cursor: pointer; font-size: 0.8rem; font-weight: bold;
-            color: var(--sub-text); text-transform: uppercase; letter-spacing: 0.1em;
+        /* Gallery Grid Item */
+        .gallery-item {
+            margin-bottom: 3rem; cursor: pointer; opacity: 0; animation: fadeIn 0.5s ease forwards;
         }
+        .gallery-image-wrapper {
+            width: 100%; aspect-ratio: 16/9; overflow: hidden; border-radius: 4px; background-color: #eee; margin-bottom: 1rem;
+        }
+        .gallery-image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .gallery-item:hover img { transform: scale(1.05); }
+        .gallery-info { padding: 0 0.2rem; }
+        .gallery-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.2rem; }
+        .gallery-location { font-size: 0.75rem; color: var(--sub-text); text-transform: uppercase; letter-spacing: 0.1em; }
 
-        /* UI Elements */
+        .close-sidebar { position: absolute; top: 2rem; right: 2rem; cursor: pointer; font-size: 0.8rem; font-weight: bold; color: var(--sub-text); text-transform: uppercase; }
+
+        /* Nav Typography */
         h1 { font-size: 2.2rem; font-weight: 900; color: white; margin-bottom: 2rem; }
-        .admin-label { display: block; font-size: 0.7rem; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 700; margin-bottom: 0.3rem; }
-        .shun-name-trigger { display: inline-block; color: white; font-size: 0.9rem; font-weight: 600; cursor: pointer; border-bottom: 1px solid rgba(255, 255, 255, 0.3); transition: 0.3s; }
-        .shun-name-trigger:hover { border-bottom-color: var(--accent-color); }
-
         .section-title { font-size: 0.7rem; font-weight: bold; color: var(--accent-color); margin-top: 2rem; margin-bottom: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em; }
         nav ul { list-style: none; }
         nav li { margin-bottom: 0.8rem; }
-        nav a { text-decoration: none; color: white; font-size: 1.2rem; font-weight: 500; transition: 0.3s; position: relative; cursor: pointer; }
-        nav a::after { content: ""; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background-color: var(--accent-color); transition: 0.3s; }
-        nav a:hover { color: var(--accent-color); }
-        nav a:hover::after { width: 100%; }
+        nav a { text-decoration: none; color: white; font-size: 1.2rem; font-weight: 500; transition: 0.3s; cursor: pointer; display: inline-block; }
+        nav a:hover { color: var(--accent-color); transform: translateX(5px); }
 
-        /* Profile Sidebar Specific */
-        #profile-sidebar .profile-bio { font-size: 0.95rem; margin-top: 2rem; color: var(--text-color); }
-        #profile-sidebar .profile-stats { margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 2rem; }
-        #profile-sidebar .stat-item { margin-bottom: 1.5rem; }
-        #profile-sidebar .stat-label { font-size: 0.7rem; text-transform: uppercase; color: var(--sub-text); font-weight: bold; }
-        #profile-sidebar .stat-value { font-size: 1.1rem; font-weight: 600; }
-
-        /* Mobile */
         @media (max-width: 768px) {
             .main-nav { width: 100%; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)); }
             .right-sidebar { width: 100%; right: -100%; }
@@ -167,12 +123,10 @@
             <div class="slide" style="background-image: url('https://media.ffnet.work/PXL_20260112_125325168.png');"></div>
         </section>
 
-        <!-- Left Main Navigation -->
         <aside class="main-nav">
             <header>
                 <h1>QUICK INSTANT</h1>
-                <span class="admin-label">Admin</span>
-                <span class="shun-name-trigger" onclick="openSidebar('profile-sidebar')">Shun Tonegawa (shunature)</span>
+                <p style="font-size: 0.9rem; font-weight: 600; cursor: pointer;" onclick="openSidebar('profile-sidebar')">Shun Tonegawa (shunature)</p>
             </header>
             <nav>
                 <p class="section-title">Log</p>
@@ -185,18 +139,15 @@
                 <ul>
                     <li><a href="https://signal.me/#p/+818073531103" target="_blank">Signal</a></li>
                     <li><a href="https://discord.com/users/1469961720997875745" target="_blank">Discord</a></li>
-                    <li><a href="https://www.last.fm/user/shunature" target="_blank">Last.fm</a></li>
                     <li><a href="https://understood-helmet-14b.notion.site/3014a217523980dca309f5381d12bb16?pvs=105" target="_blank">Message Box</a></li>
                 </ul>
             </nav>
             <footer>
-                <p style="font-size: 0.8rem; opacity: 0.6;">&copy; 2026 Shun Tonegawa.<br>
-                    Design by Gemini.
-                </p>
+                <p style="font-size: 0.7rem; opacity: 0.5;">&copy; 2026 Shun Tonegawa. Design by Gemini.</p>
             </footer>
         </aside>
 
-        <!-- Profile Sidebar -->
+        <!-- Sidebar Components -->
         <div id="profile-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem;">Shun Tonegawa</h2>
@@ -224,89 +175,76 @@
             </div>
         </div>
 
-        <!-- Blog Sidebar -->
         <div id="blog-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
-            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">Log / Blog</h2>
-            <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">Notionで綴る、思考の果て。</p>
-            <ul id="notion-blog-list" class="list-container">
-                <li class="list-item" style="cursor: default; opacity: 0.5;">Loading posts...</li>
-            </ul>
+            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">Blog</h2>
+            <ul id="notion-blog-list" class="list-container"></ul>
         </div>
 
-        <!-- Podcast Sidebar -->
         <div id="podcast-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
-            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">QI -Voices-</h2>
-            <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">声で届ける、思考の果て。</p>
-            <ul id="podcast-list" class="list-container">
-                <li class="list-item" style="cursor: default; opacity: 0.5;">Loading latest episodes...</li>
-            </ul>
+            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">Voices</h2>
+            <ul id="podcast-list" class="list-container"></ul>
         </div>
 
-        <!-- Gallery Sidebar -->
         <div id="gallery-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">Fragments</h2>
-            <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">日常の断片、光の記録。</p>
-            <ul id="gallery-list" class="list-container">
-                <li class="list-item" style="cursor: default; opacity: 0.5;">Loading fragments...</li>
-            </ul>
+            <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">光の記録。</p>
+            <div id="gallery-list" class="list-container"></div>
         </div>
     </div>
 
     <script>
-        // --- 設定 ---
-        const UNIFIED_WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/"; 
+        const WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/"; 
 
         window.addEventListener('load', () => {
-            fetchData(`${UNIFIED_WORKER_URL}`, 'notion-blog-list');
-            fetchData(`${UNIFIED_WORKER_URL}?type=podcast`, 'podcast-list', true); 
-            fetchData(`${UNIFIED_WORKER_URL}?type=gallery`, 'gallery-list'); 
+            fetchData(`${WORKER_URL}`, 'notion-blog-list');
+            fetchData(`${WORKER_URL}?type=podcast`, 'podcast-list', 'podcast');
+            fetchData(`${WORKER_URL}?type=gallery`, 'gallery-list', 'gallery');
             initSlideshow();
-            
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
                 document.body.classList.add('loaded');
                 setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 800);
-            }, 2500);
+            }, 2000);
         });
 
-        async function fetchData(url, elementId, isPodcast = false) {
+        async function fetchData(url, elementId, type = 'blog') {
             const listEl = document.getElementById(elementId);
             try {
                 const response = await fetch(url);
                 const data = await response.json();
-
-                if (!response.ok) throw new Error(data.error || 'Fetch failed');
+                if (!response.ok) throw new Error(data.error);
                 
-                if (data.length === 0) {
-                    listEl.innerHTML = '<li class="list-item" style="cursor:default">No items found.</li>';
-                    return;
-                }
-
                 listEl.innerHTML = data.map((item, index) => {
-                    let formattedId = "";
-                    if (isPodcast && item.episodeId !== undefined && item.episodeId !== "") {
-                        formattedId = String(item.episodeId).padStart(3, '0');
-                        formattedId = `#${formattedId}`;
-                    }
-
-                    return `
-                        <li class="list-item" style="animation-delay: ${index * 0.1}s" onclick="window.open('${item.url || '#'}', '_blank')">
-                            <div class="item-date">${(item.date || '').replace(/-/g, '.')}</div>
-                            <div class="item-title-wrapper">
-                                ${formattedId ? `<span class="item-episode-id">${formattedId}</span>` : ''}
-                                <div class="item-title">${item.title || 'Untitled'}</div>
+                    const delay = index * 0.1;
+                    
+                    if (type === 'gallery') {
+                        // Gallery Layout: Image + Title + Location
+                        return `
+                            <div class="gallery-item" style="animation-delay: ${delay}s" onclick="window.open('${item.url}', '_blank')">
+                                <div class="gallery-image-wrapper">
+                                    <img src="${item.image || 'https://via.placeholder.com/800x450?text=No+Image'}" alt="${item.title}" loading="lazy">
+                                </div>
+                                <div class="gallery-info">
+                                    <div class="gallery-title">${item.title}</div>
+                                    <div class="gallery-location">${item.location || 'Unknown Location'}</div>
+                                </div>
                             </div>
-                        </li>
-                    `;
+                        `;
+                    } else {
+                        // Standard List Layout
+                        return `
+                            <li class="list-item" style="animation-delay: ${delay}s" onclick="window.open('${item.url}', '_blank')">
+                                <div class="item-date">${(item.date || '').replace(/-/g, '.')}</div>
+                                <div class="item-title">${item.title}</div>
+                            </li>
+                        `;
+                    }
                 }).join('');
-
             } catch (error) {
-                listEl.innerHTML = `<li class="list-item" style="cursor:default; color:#ff4444; border:none; font-size:0.8rem;">
-                    Sync Error: ${error.message}
-                </li>`;
+                listEl.innerHTML = `<p style="font-size:0.8rem;color:red">Sync Error</p>`;
             }
         }
 
@@ -314,26 +252,18 @@
             closeSidebars();
             document.getElementById(id).classList.add('active');
         }
-
         function closeSidebars() {
             document.querySelectorAll('.right-sidebar').forEach(s => s.classList.remove('active'));
         }
-
         function initSlideshow() {
             const slides = document.querySelectorAll('.slide');
-            let currentSlide = 0;
-            if (slides.length > 0) {
-                setInterval(() => {
-                    slides[currentSlide].classList.remove('active');
-                    currentSlide = (currentSlide + 1) % slides.length;
-                    slides[currentSlide].classList.add('active');
-                }, 5000);
-            }
+            let current = 0;
+            setInterval(() => {
+                slides[current].classList.remove('active');
+                current = (current + 1) % slides.length;
+                slides[current].classList.add('active');
+            }, 5000);
         }
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeSidebars();
-        });
     </script>
 </body>
 </html>
