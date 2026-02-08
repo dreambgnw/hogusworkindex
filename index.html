@@ -11,7 +11,7 @@
 
     <!-- 2. OGP / SNS Settings -->
     <meta property="og:title" content="QUICK INSTANT">
-    <meta property="og:description" content="Always, Chillout.">
+    <meta property="og:description" content="Always, Chillout. Shun Tonegawa's Personal Log & Podcast.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ffnet.work">
     <meta property="og:image" content="https://media.ffnet.work/asset/II_diagonal_Base.png">
@@ -162,9 +162,9 @@
 
     <div class="wrapper">
         <section class="visual-area">
-            <div class="slide active" style="background-image: url('https://media.ffnet.work/PXL_20251118_192120327.png');"></div>
-            <div class="slide" style="background-image: url('https://media.ffnet.work/PXL_20251128_003611414.jpg');"></div>
-            <div class="slide" style="background-image: url('https://media.ffnet.work/PXL_20260112_125325168.png');"></div>
+            <div class="slide active" style="background-image: url('https://media.ffnet.work/takuroff.jpg');"></div>
+            <div class="slide" style="background-image: url('https://media.ffnet.work/PXL_20251122_090619986.jpg');"></div>
+            <div class="slide" style="background-image: url('https://media.ffnet.work/PXL_20260112_125325168.jpg');"></div>
         </section>
 
         <!-- Left Main Navigation -->
@@ -179,14 +179,14 @@
                 <ul>
                     <li><a onclick="openSidebar('blog-sidebar')">Blog</a></li>
                     <li><a onclick="openSidebar('podcast-sidebar')">Podcast</a></li>
+                    <li><a onclick="openSidebar('gallery-sidebar')">Gallery</a></li>
                 </ul>
                 <p class="section-title">Connect</p>
                 <ul>
-                    <li><a href="https://signal.me/#eu/Lupvn1ZUzkWiUdNHo7AhNnU4OH7fw51aGu7EdCnJNVIfV2NFPRRJKI9kNw-_Br-F" target="_blank">Signal</a></li>
+                    <li><a href="https://signal.me/#p/+818073531103" target="_blank">Signal</a></li>
                     <li><a href="https://discord.com/users/1469961720997875745" target="_blank">Discord</a></li>
                     <li><a href="https://www.last.fm/user/shunature" target="_blank">Last.fm</a></li>
-                    <li><a href="https://understood-helmet-14b.notion.site/3014a217523980dca309f5381d12bb16?pvs=105" target="_blank">Podcast Message Box</a></li>
-                </ul>
+                    <li><a href="https://understood-helmet-14b.notion.site/3014a217523980dca309f5381d12bb16?pvs=105" target="_blank">Message Box</a></li>
                 </ul>
             </nav>
             <footer>
@@ -243,6 +243,16 @@
                 <li class="list-item" style="cursor: default; opacity: 0.5;">Loading latest episodes...</li>
             </ul>
         </div>
+
+        <!-- Gallery Sidebar -->
+        <div id="gallery-sidebar" class="right-sidebar">
+            <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
+            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">Fragments</h2>
+            <p style="font-size: 0.8rem; color: var(--sub-text); margin-bottom: 2rem;">日常の断片、光の記録。</p>
+            <ul id="gallery-list" class="list-container">
+                <li class="list-item" style="cursor: default; opacity: 0.5;">Loading fragments...</li>
+            </ul>
+        </div>
     </div>
 
     <script>
@@ -252,6 +262,7 @@
         window.addEventListener('load', () => {
             fetchData(`${UNIFIED_WORKER_URL}`, 'notion-blog-list');
             fetchData(`${UNIFIED_WORKER_URL}?type=podcast`, 'podcast-list', true); 
+            fetchData(`${UNIFIED_WORKER_URL}?type=gallery`, 'gallery-list'); 
             initSlideshow();
             
             setTimeout(() => {
