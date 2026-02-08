@@ -18,7 +18,7 @@
             --accent-color: #00aeef;
             --sub-text: #666666;
             --border-color: #eeeeee;
-            --sidebar-bg: rgba(255, 255, 255, 0.9);
+            --sidebar-bg: rgba(255, 255, 255, 0.7); /* 透明度を少し高く調整 */
             --font-main: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
         }
 
@@ -28,7 +28,7 @@
                 --text-color: #f5f5f5;
                 --sub-text: #a0a0a0;
                 --border-color: #333333;
-                --sidebar-bg: rgba(18, 18, 18, 0.9);
+                --sidebar-bg: rgba(18, 18, 18, 0.7); /* 透明度を少し高く調整 */
             }
         }
 
@@ -63,26 +63,30 @@
             margin-top: 0.6rem; 
             display: flex; 
             align-items: center; 
-            gap: 0.6rem; 
+            gap: 0.8rem; 
             opacity: 0.85; 
             transition: 0.3s; 
             cursor: pointer;
             background: rgba(255, 255, 255, 0.1);
-            padding: 4px 10px;
-            border-radius: 4px;
+            padding: 8px 12px;
+            border-radius: 6px;
             width: fit-content;
             max-width: 320px;
             backdrop-filter: blur(5px);
         }
         .now-playing-mini:hover { opacity: 1; background: rgba(255, 255, 255, 0.2); }
-        .np-visual-mini { width: 24px; height: 24px; border-radius: 2px; overflow: hidden; background: #333; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .np-visual-mini { width: 32px; height: 32px; border-radius: 4px; overflow: hidden; background: #333; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         .np-visual-mini img { width: 100%; height: 100%; object-fit: cover; }
-        .np-text-mini { font-size: 0.7rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        /* 2行表示用のスタイル */
+        .np-text-container { display: flex; flex-direction: column; overflow: hidden; line-height: 1.2; }
+        .np-artist-mini { font-size: 0.65rem; font-weight: 400; color: rgba(255,255,255,0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .np-track-mini { font-size: 0.75rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         /* Sidebar Styles */
         .right-sidebar {
             position: fixed; top: 0; right: -550px; width: 550px; height: 100%;
-            background-color: var(--sidebar-bg); backdrop-filter: blur(20px);
+            background-color: var(--sidebar-bg); backdrop-filter: blur(25px); /* blurを少し強化 */
             z-index: 100; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             padding: 4rem 3rem; display: flex; flex-direction: column;
             border-left: 1px solid var(--border-color);
@@ -137,6 +141,10 @@
         }
         .action-button:hover { opacity: 0.8; transform: translateY(-2px); }
 
+        /* Profile Details */
+        .profile-label { font-size: 0.7rem; color: var(--sub-text); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
+        .profile-value { font-size: 1.2rem; font-weight: 700; color: var(--text-color); margin-bottom: 1.5rem; }
+
         @media (max-width: 768px) {
             .main-nav { width: 100%; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)); }
             .right-sidebar { width: 100%; right: -100%; padding: 3rem 2rem; }
@@ -163,7 +171,10 @@
                     <p style="font-size: 0.9rem; font-weight: 600;">Shun Tonegawa (shunature)</p>
                     <div id="np-mini" class="now-playing-mini" onclick="event.stopPropagation(); openSidebar('music-sidebar')">
                         <div class="np-visual-mini"><img id="np-img-mini" src="https://media.ffnet.work/asset/II_diagonal_Base.png"></div>
-                        <p class="np-text-mini" id="np-text-mini">Always, Chillout.</p>
+                        <div class="np-text-container">
+                            <span class="np-artist-mini" id="np-artist-mini">...</span>
+                            <span class="np-track-mini" id="np-track-mini">Always, Chillout.</span>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -221,10 +232,21 @@
         <div id="profile-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <div class="sidebar-header">
-                <h2 class="sidebar-title">Shun Tonegawa</h2>
-                <p class="sidebar-tagline">埼玉と東京を拠点に活動するクリエイター。<br>環境音や音楽、テクノロジーを軸に、日常を少しだけ豊かにする仕組みを考えています。</p>
+                <h2 class="sidebar-title">Profile</h2>
+                <p class="sidebar-tagline">この場所の主について。</p>
             </div>
-            <p style="color: var(--accent-color); font-weight: bold; font-size: 0.8rem; margin-top: 1rem;">AKA: shunature</p>
+            <div class="list-container">
+                <div class="profile-label">名前</div>
+                <div class="profile-value">Shun Tonegawa</div>
+
+                <div class="profile-label">別名</div>
+                <div class="profile-value">shunature</div>
+
+                <div class="profile-label">Gemini's Note</div>
+                <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-color); font-style: italic;">
+                    「常にどこかへ接続しながらも、内なる静寂を大切にする。彼の紡ぐログには、そんな都会的で心地よい距離感のチルアウトが漂っています。」
+                </p>
+            </div>
         </div>
 
         <div id="blog-sidebar" class="right-sidebar">
@@ -317,22 +339,25 @@
             try {
                 const res = await fetch(`${WORKER_URL}?type=nowplaying`);
                 const data = await res.json();
-                const textEl = document.getElementById('np-text-mini');
+                const trackEl = document.getElementById('np-track-mini');
+                const artistEl = document.getElementById('np-artist-mini');
                 const imgEl = document.getElementById('np-img-mini');
 
                 if (data && data.present) {
-                    textEl.innerText = `${data.title} — ${data.artist}`;
+                    artistEl.innerText = data.artist;
+                    trackEl.innerText = data.title;
                     if (data.image && data.image !== "") {
                         imgEl.src = data.image;
                     } else {
                         imgEl.src = "https://media.ffnet.work/asset/II_diagonal_Base.png";
                     }
                 } else {
-                    textEl.innerText = "Always, Chillout.";
+                    artistEl.innerText = "System Status";
+                    trackEl.innerText = "Always, Chillout.";
                     imgEl.src = "https://media.ffnet.work/asset/II_diagonal_Base.png";
                 }
             } catch (e) {
-                document.getElementById('np-text-mini').innerText = "Always, Chillout.";
+                document.getElementById('np-track-mini').innerText = "Always, Chillout.";
             }
         }
 
