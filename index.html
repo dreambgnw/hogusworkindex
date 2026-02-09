@@ -140,18 +140,35 @@
         .section-title { font-size: 0.7rem; font-weight: bold; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.1em; }
 
         nav ul { list-style: none; }
-        nav li { margin-bottom: 1.2rem; }
-        nav a { text-decoration: none; color: white; font-size: 1.2rem; font-weight: 500; transition: 0.3s; cursor: pointer; display: inline-block; }
+        nav li { margin-bottom: 1.2rem; position: relative; }
+        nav a { text-decoration: none; color: white; font-size: 1.2rem; font-weight: 500; transition: 0.3s; cursor: pointer; display: inline-block; position: relative; }
         nav a:hover { color: var(--accent-color); transform: translateX(5px); }
+        
+        /* Notification Dot */
+        .nav-indicator {
+            position: absolute; top: 5px; right: -12px;
+            width: 6px; height: 6px; border-radius: 50%;
+            background-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+            display: none; /* Default hidden */
+        }
+        .has-new .nav-indicator { display: block; }
+
         .link-desc { font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-top: 2px; font-weight: normal; line-height: 1.4; }
 
         .profile-label { font-size: 0.7rem; color: var(--sub-text); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
         .profile-value { font-size: 1.2rem; font-weight: 700; color: var(--text-color); margin-bottom: 1.5rem; }
 
         .list-item:hover { opacity: 0.7; transform: translateX(5px); }
-        .list-item { transition: 0.3s ease; list-style: none; margin-bottom: 1.5rem; cursor: pointer; }
-        .list-item-date { font-size: 0.7rem; color: var(--sub-text); font-weight: bold; text-transform: uppercase; margin-bottom: 2px; }
+        .list-item { transition: 0.3s ease; list-style: none; margin-bottom: 1.5rem; cursor: pointer; position: relative; }
+        .list-item-date { font-size: 0.7rem; color: var(--sub-text); font-weight: bold; text-transform: uppercase; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
         .list-item-title { font-size: 1.1rem; font-weight: 700; color: var(--text-color); }
+
+        /* New Badge in List */
+        .new-badge {
+            font-size: 0.6rem; background: var(--accent-color); color: white;
+            padding: 2px 6px; border-radius: 4px; font-weight: 900; letter-spacing: 0.05em;
+        }
 
         /* Guide / Compact Card Style */
         .compact-card { background: rgba(0,0,0,0.03); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.2rem; border: 1px solid var(--border-color); }
@@ -198,8 +215,8 @@
             <nav>
                 <div class="section-header"><p class="section-title">Log</p></div>
                 <ul>
-                    <li><a onclick="openSidebar('blog-sidebar')">Blog</a><p class="link-desc">すぐ届く、いま感じる。</p></li>
-                    <li><a onclick="openSidebar('podcast-sidebar')">Voices</a><p class="link-desc">すぐ届く、いま聞こえる。</p></li>
+                    <li id="nav-blog"><a onclick="openSidebar('blog-sidebar')">Blog <span class="nav-indicator"></span></a><p class="link-desc">すぐ届く、いま感じる。</p></li>
+                    <li id="nav-voices"><a onclick="openSidebar('podcast-sidebar')">Voices <span class="nav-indicator"></span></a><p class="link-desc">すぐ届く、いま聞こえる。</p></li>
                     <li><a onclick="openSidebar('music-sidebar')">Now Playing</a><p class="link-desc">音楽の好みがここで</p></li>
                 </ul>
                 <div class="section-header"><p class="section-title">Connect</p></div>
@@ -316,9 +333,10 @@
 
     <script>
         const WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/"; 
+        const NEW_THRESHOLD_HOURS = 3; // 3時間以内の投稿を「New」とする
 
         window.addEventListener('load', () => {
-            fetchData(`${WORKER_URL}`, 'notion-blog-list');
+            fetchData(`${WORKER_URL}`, 'notion-blog-list', 'blog');
             fetchData(`${WORKER_URL}?type=podcast`, 'podcast-list', 'podcast');
             fetchRecentMusic();
             updateNowPlaying();
@@ -452,16 +470,40 @@
 
         async function fetchData(url, elementId, type = 'blog') {
             const listEl = document.getElementById(elementId);
+            const navItem = document.getElementById(type === 'blog' ? 'nav-blog' : 'nav-voices');
+            
             try {
                 const response = await fetch(url);
                 const data = await response.json();
+                
                 if (data && Array.isArray(data)) {
-                    listEl.innerHTML = data.map(item => `
-                        <li class="list-item" onclick="window.open('${item.url}','_blank')">
-                            <div class="list-item-date">${(item.date || '').replace(/-/g, '.')}</div>
-                            <div class="list-item-title">${item.title}</div>
-                        </li>
-                    `).join('');
+                    let hasNewItem = false;
+                    const now = new Date();
+
+                    listEl.innerHTML = data.map(item => {
+                        const itemDate = new Date(item.date);
+                        // ミリ秒差を時間に変換
+                        const diffInHours = (now - itemDate) / (1000 * 60 * 60);
+                        const isNew = diffInHours <= NEW_THRESHOLD_HOURS;
+                        
+                        if (isNew) hasNewItem = true;
+
+                        return `
+                            <li class="list-item" onclick="window.open('${item.url}','_blank')">
+                                <div class="list-item-date">
+                                    ${(item.date || '').replace(/-/g, '.')}
+                                    ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+                                </div>
+                                <div class="list-item-title">${item.title}</div>
+                            </li>
+                        `;
+                    }).join('');
+
+                    if (hasNewItem) {
+                        navItem.classList.add('has-new');
+                    } else {
+                        navItem.classList.remove('has-new');
+                    }
                 }
             } catch (error) { console.error(`Fetch error for ${elementId}:`, error); }
         }
