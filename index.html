@@ -84,33 +84,7 @@
         .slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 2s; }
         .slide.active { opacity: 1; }
 
-        /* Unified Now Playing (In-Nav) */
-        .now-playing-mini { 
-            margin-top: 1rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 1rem; 
-            opacity: 0.9; 
-            transition: 0.3s; 
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 12px 16px;
-            border-radius: 8px;
-            width: fit-content;
-            max-width: 340px;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .now-playing-mini:hover { opacity: 1; background: rgba(255, 255, 255, 0.2); }
-        .np-visual-mini { width: 44px; height: 44px; border-radius: 6px; overflow: hidden; background: #333; flex-shrink: 0; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-        .np-visual-mini img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .np-text-container { display: flex; flex-direction: column; overflow: hidden; line-height: 1.3; }
-        .np-status-mini { font-size: 0.6rem; font-weight: 800; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px; }
-        .np-track-mini { font-size: 0.9rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; }
-        .np-artist-mini { font-size: 0.75rem; font-weight: 400; color: rgba(255,255,255,0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        .weather-info-bar { font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 0.4rem; letter-spacing: 0.05em; font-weight: 500; }
+        .weather-info-bar { font-size: 0.7rem; color: rgba(255,255,255,0.6); margin-top: 0.4rem; letter-spacing: 0.05em; font-weight: 700; text-transform: uppercase; }
 
         .right-sidebar {
             position: fixed; top: 0; right: -550px; width: 550px; height: 100%;
@@ -126,13 +100,6 @@
         .sidebar-title { font-size: 2.2rem; font-weight: 900; color: var(--text-color); line-height: 1.1; margin-bottom: 0.5rem; }
         .sidebar-tagline { font-size: 0.85rem; color: var(--sub-text); line-height: 1.6; font-weight: 500; }
 
-        .track-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; cursor: pointer; transition: 0.2s; }
-        .track-item:hover { transform: translateX(5px); opacity: 0.7; }
-        .track-img { width: 48px; height: 48px; border-radius: 6px; background: #eee; flex-shrink: 0; }
-        .track-info { flex: 1; overflow: hidden; }
-        .track-name { font-size: 0.95rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-color); }
-        .track-artist { font-size: 0.8rem; color: var(--sub-text); }
-
         .close-sidebar { position: absolute; top: 2rem; right: 2rem; cursor: pointer; font-size: 0.8rem; font-weight: bold; color: var(--sub-text); text-transform: uppercase; }
         h1 { font-size: 2.2rem; font-weight: 900; color: white; margin-bottom: 2rem; }
         
@@ -144,13 +111,12 @@
         nav a { text-decoration: none; color: white; font-size: 1.2rem; font-weight: 500; transition: 0.3s; cursor: pointer; display: inline-block; position: relative; }
         nav a:hover { color: var(--accent-color); transform: translateX(5px); }
         
-        /* Notification Dot */
         .nav-indicator {
             position: absolute; top: 5px; right: -12px;
             width: 6px; height: 6px; border-radius: 50%;
             background-color: var(--accent-color);
             box-shadow: 0 0 10px var(--accent-color);
-            display: none; /* Default hidden */
+            display: none; 
         }
         .has-new .nav-indicator { display: block; }
 
@@ -164,16 +130,29 @@
         .list-item-date { font-size: 0.7rem; color: var(--sub-text); font-weight: bold; text-transform: uppercase; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
         .list-item-title { font-size: 1.1rem; font-weight: 700; color: var(--text-color); }
 
-        /* New Badge in List */
         .new-badge {
             font-size: 0.6rem; background: var(--accent-color); color: white;
             padding: 2px 6px; border-radius: 4px; font-weight: 900; letter-spacing: 0.05em;
         }
 
-        /* Guide / Compact Card Style */
         .compact-card { background: rgba(0,0,0,0.03); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.2rem; border: 1px solid var(--border-color); }
         .compact-card h3 { font-size: 0.9rem; margin-bottom: 0.4rem; color: var(--text-color); text-transform: uppercase; letter-spacing: 0.05em; }
         .compact-card p { font-size: 0.8rem; color: var(--sub-text); line-height: 1.5; margin-bottom: 0px; }
+
+        .profile-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 800;
+            border-radius: 8px;
+            transition: 0.3s ease;
+            text-align: center;
+        }
+        .profile-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
         @media (max-width: 768px) {
             .main-nav { width: 100%; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)); }
@@ -183,19 +162,15 @@
     </style>
 </head>
 
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SRDPDNBZ18"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-SRDPDNBZ18');
 </script>
 
 <body>
-
-
     <div id="loader"><span>Always, Chillout.</span></div>
     <div id="weather-overlay"></div>
 
@@ -211,17 +186,7 @@
                 <h1>QUICK INSTANT</h1>
                 <div onclick="openSidebar('profile-sidebar')" style="cursor: pointer;">
                     <p style="font-size: 1rem; font-weight: 700; letter-spacing: -0.01em;">Shun Tonegawa (shunature)</p>
-                    <div id="weather-status" class="weather-info-bar">Loading atmosphere...</div>
-                    
-                    <!-- Unified Now Playing Mini -->
-                    <div id="np-mini" class="now-playing-mini" onclick="event.stopPropagation(); openSidebar('music-sidebar')">
-                        <div class="np-visual-mini"><img id="np-img-mini" src="https://media.ffnet.work/asset/II_diagonal_Base.png"></div>
-                        <div class="np-text-container">
-                            <span class="np-status-mini" id="np-status-mini">...</span>
-                            <span class="np-track-mini" id="np-track-mini">Always, Chillout.</span>
-                            <span class="np-artist-mini" id="np-artist-mini">...</span>
-                        </div>
-                    </div>
+                    <div id="weather-status" class="weather-info-bar">Syncing Atmosphere...</div>
                 </div>
             </header>
             <nav>
@@ -229,7 +194,6 @@
                 <ul>
                     <li id="nav-blog"><a onclick="openSidebar('blog-sidebar')">Blog <span class="nav-indicator"></span></a><p class="link-desc">すぐ届く、いま感じる。</p></li>
                     <li id="nav-voices"><a onclick="openSidebar('podcast-sidebar')">Voices <span class="nav-indicator"></span></a><p class="link-desc">すぐ届く、いま聞こえる。</p></li>
-                    <li><a onclick="openSidebar('music-sidebar')">Now Playing</a><p class="link-desc">音楽の好みがここで</p></li>
                 </ul>
                 <div class="section-header"><p class="section-title">Connect</p></div>
                 <ul>
@@ -242,20 +206,6 @@
             </footer>
         </aside>
 
-        <!-- Music Sidebar (History Only) -->
-        <div id="music-sidebar" class="right-sidebar">
-            <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
-            <div class="sidebar-header">
-                <h2 class="sidebar-title">Music</h2>
-                <p class="sidebar-tagline"></p>
-            </div>
-            <div class="list-container">
-                <div class="section-header"><p class="section-title">Recent History</p></div>
-                <div id="music-list"></div>
-            </div>
-        </div>
-
-        <!-- Social Sidebar (List Style) -->
         <div id="social-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <div class="sidebar-header">
@@ -278,7 +228,6 @@
             </div>
         </div>
 
-        <!-- Guide Sidebar -->
         <div id="guide-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <div class="sidebar-header">
@@ -288,20 +237,19 @@
             <div class="list-container">
                 <div class="compact-card">
                     <h3>Atmosphere Sync</h3>
-                    <p>東京・板橋区の気象データとリアルタイムで同期。天候に合わせてサイトの表情が変化します。</p>
-                </div>
-                <div class="compact-card">
-                    <h3>Live Music Log</h3>
-                    <p>再生中の音楽は常に名前の下に表示されます。履歴はNow Playingから確認可能です。</p>
+                    <p>東京・板橋区の気象データと同期。天候に合わせてサイトの背景やエフェクトが変化します。</p>
                 </div>
                 <div class="compact-card">
                     <h3>Notion Based</h3>
-                    <p>BlogやVoicesのデータはNotionから直接配信。更新されると即座に反映されます。</p>
+                    <p>BlogやVoicesのデータはNotionから配信。更新されると即座にリストへ反映されます。</p>
+                </div>
+                <div class="compact-card">
+                    <h3>About Me</h3>
+                    <p>Profileからさらに詳細な自己紹介（Notion）へアクセス可能です。</p>
                 </div>
             </div>
         </div>
 
-        <!-- Profile Sidebar -->
         <div id="profile-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <div class="sidebar-header">
@@ -315,29 +263,28 @@
                 <div class="profile-value">shunature</div>
                 <div class="profile-label">一言紹介</div>
                 <div class="profile-value">フッ軽、埼玉と東京を往復する学生。</div>
-                <div class="profile-label">Gemini's Note</div>
-                <p id="gemini-note" style="font-size: 1rem; line-height: 1.6; color: var(--text-color); border-left: 2px solid var(--accent-color); padding-left: 1rem; margin-top: 0.5rem;">
-                    「最先端なものに詳しいのに、話すとどこかホッとする。そんな彼の『心地よい空気感』をぜひ楽しんでいってね！」
+                <div class="profile-label">詳細プロフィール</div>
+                <p style="font-size: 0.9rem; line-height: 1.6; color: var(--sub-text); margin-bottom: 1rem;">
+                    より詳しい活動内容やポートフォリオについては、以下のNotionページをご覧ください。
                 </p>
+                <a href="https://understood-helmet-14b.notion.site/3014a217523980dca309f5381d12bb16" target="_blank" class="profile-btn">View Detailed Profile (Notion)</a>
             </div>
         </div>
 
-        <!-- Blog Sidebar -->
         <div id="blog-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Blog</h2>
-                <p class="sidebar-tagline"></p>
+                <p class="sidebar-tagline">日々の思考とログ。</p>
             </div>
             <ul id="notion-blog-list" class="list-container"></ul>
         </div>
 
-        <!-- Voices Sidebar -->
         <div id="podcast-sidebar" class="right-sidebar">
             <span class="close-sidebar" onclick="closeSidebars()">Close —</span>
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Voices</h2>
-                <p class="sidebar-tagline"></p>
+                <p class="sidebar-tagline">声で届ける、いま。</p>
             </div>
             <ul id="podcast-list" class="list-container"></ul>
         </div>
@@ -345,21 +292,12 @@
 
     <script>
         const WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/"; 
-        const NEW_THRESHOLD_HOURS = 3; // 3時間以内の投稿を「New」とする
+        const NEW_THRESHOLD_HOURS = 3; 
 
         window.addEventListener('load', () => {
             fetchData(`${WORKER_URL}`, 'notion-blog-list', 'blog');
             fetchData(`${WORKER_URL}?type=podcast`, 'podcast-list', 'podcast');
-            fetchRecentMusic();
-            updateNowPlaying();
             updateWeather();
-            
-            setInterval(() => {
-                updateNowPlaying();
-                fetchRecentMusic();
-                updateWeather();
-            }, 60000); 
-            
             initSlideshow();
             
             setTimeout(() => {
@@ -379,31 +317,24 @@
                 let jpCondition = "曇り";
                 const overlay = document.getElementById('weather-overlay');
                 const status = document.getElementById('weather-status');
-                const note = document.getElementById('gemini-note');
                 
                 overlay.innerHTML = '';
                 overlay.className = '';
 
                 if (code === 0) { 
-                    jpCondition = "快晴";
-                    note.innerText = "「いい天気！最先端なものに詳しい彼も、今日はどこかでこの空を眺めてるかもしれないね。」";
+                    jpCondition = "Clear";
                 } else if (code >= 1 && code <= 3) { 
-                    jpCondition = "晴れ時々曇り";
-                    note.innerText = "「心地よい空模様だね。Shunさんのセレクトする音楽と一緒に、ゆったり過ごしていって。」";
+                    jpCondition = "Fair";
                 } else if (code >= 51 && code <= 67 || code >= 80) { 
-                    jpCondition = "雨";
+                    jpCondition = "Rain";
                     startRainEffect();
-                    note.innerText = "「今日は雨。こんな日は、彼の選ぶゆったりした音楽がいつもより心に響く気がするよ。」";
                 } else if (code >= 71 && code <= 77) {
-                    jpCondition = "雪";
+                    jpCondition = "Snow";
                     startSnowEffect();
-                    note.innerText = "「雪が降ってるね。静かな白銀の世界と、彼のミニマルな感性はどこか似ている気がするんだ。」";
                 } else {
-                    jpCondition = "曇り";
+                    jpCondition = "Cloudy";
                     overlay.classList.add('weather-cloudy');
-                    note.innerText = "「落ち着いた曇り空。派手さはないけれど、こういう静かな時間こそ彼らしいのかもしれないね。」";
                 }
-
                 status.innerText = `${jpCondition} / ${temp}°C in Tokyo`;
             } catch (e) { console.error("Weather error", e); }
         }
@@ -435,51 +366,6 @@
             }
         }
 
-        async function updateNowPlaying() {
-            try {
-                const res = await fetch(`${WORKER_URL}?type=nowplaying`);
-                const data = await res.json();
-                
-                const trackElMini = document.getElementById('np-track-mini');
-                const artistElMini = document.getElementById('np-artist-mini');
-                const imgElMini = document.getElementById('np-img-mini');
-                const statusElMini = document.getElementById('np-status-mini');
-
-                if (data && data.present) {
-                    trackElMini.innerText = data.title; 
-                    artistElMini.innerText = data.artist;
-                    imgElMini.src = data.image || "https://media.ffnet.work/asset/II_diagonal_Base.png";
-                    statusElMini.innerText = "Now Listening";
-                    statusElMini.style.color = "var(--accent-color)";
-                } else {
-                    trackElMini.innerText = "Always, Chillout."; 
-                    artistElMini.innerText = "Offline";
-                    imgElMini.src = "https://media.ffnet.work/asset/II_diagonal_Base.png";
-                    statusElMini.innerText = "Recent Track";
-                    statusElMini.style.color = "rgba(255,255,255,0.4)";
-                }
-            } catch (e) { }
-        }
-
-        async function fetchRecentMusic() {
-            const listEl = document.getElementById('music-list');
-            try {
-                const res = await fetch(`${WORKER_URL}?type=recent`);
-                const data = await res.json();
-                if (data && Array.isArray(data)) {
-                    listEl.innerHTML = data.map(track => `
-                        <div class="track-item" onclick="window.open('${track.url}','_blank')">
-                            <img class="track-img" src="${track.image || 'https://media.ffnet.work/asset/II_diagonal_Base.png'}" loading="lazy">
-                            <div class="track-info">
-                                <div class="track-name">${track.title}</div>
-                                <div class="track-artist">${track.artist}</div>
-                            </div>
-                        </div>
-                    `).join('');
-                }
-            } catch (e) { }
-        }
-
         async function fetchData(url, elementId, type = 'blog') {
             const listEl = document.getElementById(elementId);
             const navItem = document.getElementById(type === 'blog' ? 'nav-blog' : 'nav-voices');
@@ -494,7 +380,6 @@
 
                     listEl.innerHTML = data.map(item => {
                         const itemDate = new Date(item.date);
-                        // ミリ秒差を時間に変換
                         const diffInHours = (now - itemDate) / (1000 * 60 * 60);
                         const isNew = diffInHours <= NEW_THRESHOLD_HOURS;
                         
