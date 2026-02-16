@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music - Shun Tonegawa</title>
+    
+    <link rel="icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="common.css">
+    
+    <style>
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 5rem);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        .artist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .artist-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .artist-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .artist-name {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .artist-description {
+            font-size: 1rem;
+            line-height: 1.9;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .favorite-track {
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            background: rgba(246, 193, 60, 0.1);
+            border-left: 3px solid var(--accent);
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .artist-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .artist-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<script src="common.js"></script>
+<body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <header class="page-header">
+            <h1 class="page-title">Music</h1>
+            <p class="page-subtitle">好きなバンド・アーティスト</p>
+        </header>
+
+        <main class="artist-grid">
+            <article class="artist-card">
+                <h2 class="artist-name">ゲスの極み乙女</h2>
+                <p class="artist-description">
+                    2014年のコカコーラCMで出会い、一度は離れたもののやっぱりいいなと思っています。
+                </p>
+                <div class="favorite-track">♪ 悪夢のおまけ</div>
+            </article>
+
+            <article class="artist-card">
+                <h2 class="artist-name">ジェニーハイ</h2>
+                <p class="artist-description">
+                    ゲス乙女のメンバー「川谷絵音」さんのプロジェクト。「ランデブーに逃避行」と出会ってから、ブッ刺さる楽曲ばかり。
+                </p>
+                <div class="favorite-track">♪ ランデブーに逃避行 / コクーンさん / 夏嵐</div>
+            </article>
+
+            <article class="artist-card">
+                <h2 class="artist-name">Galileo Galilei</h2>
+                <p class="artist-description">
+                    2017年頃、ラジオから流れてきた「青い栞」で刺さり、その後Vo.尾崎雄貴さんの「BBHF」「warbear」を経て、活動再開したGGへと辿り着く。
+                </p>
+                <div class="favorite-track">♪ ピッチカート</div>
+            </article>
+
+            <article class="artist-card">
+                <h2 class="artist-name">tacica</h2>
+                <p class="artist-description">
+                    初めてSpotifyで出会ったアーティスト。「HALO」から出会い、そこからずっと追っています。
+                </p>
+                <div class="favorite-track">♪ 花束と音楽隊 / aranami / 人鳥哀歌（ペンギンエレジー）</div>
+            </article>
+
+            <article class="artist-card">
+                <h2 class="artist-name">BUMP OF CHICKEN</h2>
+                <p class="artist-description">
+                    COSMONAUTのCMを見た記憶から始まり、aurora arcを中古で購入、RAYをCDレンタルでローカルライブラリに。一度離れたものの、Sleep Walking Orchestraで「やっぱBUMP」と思い、アルバム全コンプ。
+                </p>
+                <div class="favorite-track">♪ Gravity</div>
+            </article>
+
+            <article class="artist-card">
+                <h2 class="artist-name">ACIDMAN</h2>
+                <p class="artist-description">
+                    ゲオの宅レンで見つけた「パンク」欄のACIDMAN。最新譜の「光学」がレンタル中だったため、Apple Musicで聞いてハマりました。
+                </p>
+                <div class="favorite-track">♪ アストロサイト</div>
+            </article>
+
+            <article class="artist-card">
+                <h2 class="artist-name">高橋優</h2>
+                <p class="artist-description">
+                    一番最初の出会いは「明日はきっといい日になる」。ReLOVE&RePeaceで初購入を機に、アルバムを精力的に集め始め、「自由悟然（じゅうごねん）」を除きフルコンプ。
+                </p>
+                <div class="favorite-track">♪ エンドロール</div>
+            </article>
+
+            <article class="artist-card">
+                <h2 class="artist-name">odol</h2>
+                <p class="artist-description">
+                    「小さなこと」を一つで知り、「望み」など多くの楽曲を知ることに。
+                </p>
+                <div class="favorite-track">♪ 不思議</div>
+            </article>
+
+            <article class="artist-card">
+                <h2 class="artist-name">ズーカラデル</h2>
+                <p class="artist-description">
+                    ラジオのゲストで出た際に聞いた「アニー」を聴きハマる。久々に聞いた「太陽歩行」というアルバムからさらに深淵へ。
+                </p>
+                <div class="favorite-track">♪ 春風</div>
+            </article>
+        </main>
+    </div>
+
+<div id="footer-placeholder"></div>
+</body>
+</html>

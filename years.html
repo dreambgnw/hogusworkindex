@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Years - Shun Tonegawa</title>
+    
+    <link rel="icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="common.css">
+    
+    <style>
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 5rem);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3.5rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg-primary);
+        }
+
+        .timeline-year {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateX(8px);
+            border-color: var(--accent);
+        }
+
+        .timeline-event {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .timeline {
+                padding-left: 2rem;
+            }
+
+            .timeline-item::before {
+                left: -2.5rem;
+            }
+
+            .timeline-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<script src="common.js"></script>
+<body>
+<div id="header-placeholder"></div>
+
+    <div class="container">
+        <header class="page-header">
+            <h1 class="page-title">Years</h1>
+            <p class="page-subtitle">タイムライン</p>
+        </header>
+
+        <main class="timeline">
+            <article class="timeline-item">
+                <div class="timeline-year">2007</div>
+                <div class="timeline-content">
+                    <p class="timeline-event">11/03 誕生</p>
+                </div>
+            </article>
+
+            <article class="timeline-item">
+                <div class="timeline-year">〜2017</div>
+                <div class="timeline-content">
+                    <p class="timeline-event">優ちゃん(愛犬)と17年間過ごす</p>
+                </div>
+            </article>
+
+            <article class="timeline-item">
+                <div class="timeline-year">2018</div>
+                <div class="timeline-content">
+                    <p class="timeline-event">6月 レオを迎える</p>
+                </div>
+            </article>
+
+            <article class="timeline-item">
+                <div class="timeline-year">2020</div>
+                <div class="timeline-content">
+                    <p class="timeline-event">4月 Ubuntu使用開始(Linux転機)<br>
+                    5月 GIMP使用開始</p>
+                </div>
+            </article>
+
+            <article class="timeline-item">
+                <div class="timeline-year">2022</div>
+                <div class="timeline-content">
+                    <p class="timeline-event">Arch Linuxへ移行</p>
+                </div>
+            </article>
+
+            <article class="timeline-item">
+                <div class="timeline-year">2024</div>
+                <div class="timeline-content">
+                    <p class="timeline-event">NOSTRASIA参加(Crypto Lounge GOX)</p>
+                </div>
+            </article>
+
+            <article class="timeline-item">
+                <div class="timeline-year">2025</div>
+                <div class="timeline-content">
+                    <p class="timeline-event">NOSTRASIA 2回目参加(Crypto Lounge GOX)</p>
+                </div>
+            </article>
+
+            <article class="timeline-item">
+                <div class="timeline-year">2026</div>
+                <div class="timeline-content">
+                    <p class="timeline-event">2/9 QUICK INSTANT Voices開始<br>
+                    2/14-15 QUICK INSTANTサイト制作</p>
+                </div>
+            </article>
+        </main>
+    </div>
+
+<div id="footer-placeholder"></div>
+</body>
+</html>
