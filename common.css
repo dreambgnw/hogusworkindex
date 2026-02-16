@@ -73,6 +73,12 @@ body {
     padding-top: 70px;
 }
 
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
 /* Header */
 .site-header {
     position: fixed;

@@ -28,7 +28,8 @@ fetch('footer.html')
 // テーマ切り替え
 function toggleTheme() {
     const html = document.documentElement;
-    const icons = document.querySelectorAll('.theme-icon');
+    const sunIcons = document.querySelectorAll('.theme-icon-sun');
+    const moonIcons = document.querySelectorAll('.theme-icon-moon');
     
     const currentTheme = html.getAttribute('data-theme') || 
                         (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
@@ -38,8 +39,11 @@ function toggleTheme() {
     html.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     
-    icons.forEach(icon => {
-        icon.textContent = newTheme === 'light' ? '☀️' : '🌙';
+    sunIcons.forEach(icon => {
+        icon.style.display = newTheme === 'light' ? 'block' : 'none';
+    });
+    moonIcons.forEach(icon => {
+        icon.style.display = newTheme === 'light' ? 'none' : 'block';
     });
 }
 
@@ -61,9 +65,43 @@ function toggleMobileMenu() {
     
     // テーマアイコンの更新はヘッダー読み込み後に行う
     setTimeout(() => {
-        const icons = document.querySelectorAll('.theme-icon');
-        icons.forEach(icon => {
-            icon.textContent = theme === 'light' ? '☀️' : '🌙';
+        const sunIcons = document.querySelectorAll('.theme-icon-sun');
+        const moonIcons = document.querySelectorAll('.theme-icon-moon');
+        sunIcons.forEach(icon => {
+            icon.style.display = theme === 'light' ? 'block' : 'none';
+        });
+        moonIcons.forEach(icon => {
+            icon.style.display = theme === 'light' ? 'none' : 'block';
         });
     }, 100);
+})();
+
+// 3回タップ検出 - タイトルをクリック
+(function() {
+    let tapCount = 0;
+    let tapTimeout;
+    const NOTION_URL = 'https://www.notion.so/This-is-Secret-Page-3094a217523980e1b828cd820f6ba15a?source=copy_link';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const siteTitle = document.querySelector('.site-title');
+        if (siteTitle) {
+            siteTitle.addEventListener('click', () => {
+                tapCount++;
+                
+                // タイムアウトをリセット
+                clearTimeout(tapTimeout);
+                
+                if (tapCount === 3) {
+                    // 3回タップ成功
+                    window.open(NOTION_URL, '_blank');
+                    tapCount = 0;
+                } else {
+                    // 500ms以内に次のクリックがなければリセット
+                    tapTimeout = setTimeout(() => {
+                        tapCount = 0;
+                    }, 500);
+                }
+            });
+        }
+    });
 })();

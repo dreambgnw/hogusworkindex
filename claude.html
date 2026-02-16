@@ -36,13 +36,8 @@
             margin: 0 auto;
             padding: 8rem 2rem 4rem;
         }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 6rem 1.5rem 3rem;
-            }
 
-            .content-section {
+        .content-section {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             border: 1px solid var(--border);
@@ -74,24 +69,35 @@
 
         .tech-list {
             list-style: none;
-            padding-left: 1rem;
+            padding-left: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
 
         .tech-list li {
-            margin-bottom: 0.75rem;
-            padding-left: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
             position: relative;
         }
 
         .tech-list li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: 600;
+            display: none;
         }
         
-            padding: 1.5rem;
+        @media (max-width: 768px) {
+            .container {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .content-section {
+                padding: 1.5rem;
+            }
+
+            .tech-list {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -104,6 +110,7 @@
 
         <main>
             <section class="content-section">
+                <h1 class="page-title" style="text-align: center;">Claude Sonnet 4.5</h1>
                 <h2 class="section-title">制作コンセプト</h2>
                 <p class="text">
                     QUICK INSTANTは、「すぐ届く、いま感じる」をコンセプトに、1ページスクロール型の個人サイトとして設計されました。複雑なナビゲーションを排除し、訪問者が必要な情報に素早くアクセスできることを重視しています。
