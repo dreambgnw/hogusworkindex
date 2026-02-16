@@ -102,7 +102,6 @@
         }
     </style>
 </head>
-<script src="common.js"></script>
 <body>
     <div id="header-placeholder"></div>
 
@@ -189,44 +188,6 @@
     </div>
 
 <div id="footer-placeholder"></div>
-
-    <script>
-        function toggleTheme() {
-            const html = document.documentElement;
-            const icons = document.querySelectorAll('.theme-icon');
-            
-            const currentTheme = html.getAttribute('data-theme') ||
-                                (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-            
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            icons.forEach(icon => {
-                icon.textContent = newTheme === 'light' ? '☀️' : '🌙';
-            });
-        }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const hamburger = document.querySelector('.hamburger');
-            menu.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        }
-
-        (function() {
-            const savedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const theme = savedTheme || (prefersDark ? 'dark' : 'light');
-            
-            document.documentElement.setAttribute('data-theme', theme);
-            
-            const icons = document.querySelectorAll('.theme-icon');
-            icons.forEach(icon => {
-                icon.textContent = theme === 'light' ? '☀️' : '🌙';
-            });
-        })();
-    </script>
+    <script src="common.js"></script>
 </body>
 </html>
