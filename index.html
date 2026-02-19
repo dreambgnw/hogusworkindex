@@ -166,6 +166,78 @@
             border-radius: 50%;
         }
 
+        /* Info Grid */
+        .info-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto 2rem;
+            padding: 0 2rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.7s;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .info-card-circle:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(246, 193, 60, 0.2);
+        }
+
+        .info-icon {
+            flex-shrink: 0;
+            color: var(--accent);
+        }
+
+        .info-label-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                gap: 1rem;
+                padding: 0 1.5rem;
+            }
+            
+            .info-card-circle {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .info-icon {
+                width: 18px;
+                height: 18px;
+            }
+
+            .info-label-text {
+                font-size: 0.7rem;
+            }
+        }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -355,21 +427,20 @@
             transform: translateY(-2px);
         }
 
-        /* Footer */
-        footer {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            border-top: 1px solid var(--border);
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
+            .profile-section {
+                margin: 4rem auto;
+                padding: 0 1.5rem;
+            }
+
             .content-grid {
                 grid-template-columns: 1fr;
+                padding: 0 1.5rem 4rem;
+            }
+
+            .section-header-with-more {
+                padding: 0 1.5rem;
             }
         }
 
@@ -467,6 +538,26 @@
     color: var(--accent);
 }
 
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 1.5rem;
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .modal-close {
+        right: 1rem;
+        top: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        padding-right: 2rem;
+    }
+}
+
 .top-tracks-list {
     display: flex;
     flex-direction: column;
@@ -525,6 +616,35 @@
     font-size: 0.85rem;
     color: var(--accent);
     margin-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+    .track-item {
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+
+    .track-number {
+        font-size: 1.2rem;
+        min-width: 1.5rem;
+    }
+
+    .track-image {
+        width: 50px;
+        height: 50px;
+    }
+
+    .track-name {
+        font-size: 0.9rem;
+    }
+
+    .track-artist {
+        font-size: 0.8rem;
+    }
+
+    .track-playcount {
+        font-size: 0.75rem;
+    }
 }
 /* Updates Section */
 .updates-section {
@@ -722,6 +842,56 @@
     font-size: 0.85rem;
     color: var(--text-secondary);
 }
+
+.modal-info-display {
+    text-align: center;
+    padding: 2rem;
+}
+
+.modal-info-main {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.modal-info-sub {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .modal-list {
+        gap: 0.75rem;
+    }
+
+    .modal-item {
+        padding: 0.75rem;
+    }
+
+    .modal-item-label {
+        font-size: 0.7rem;
+    }
+
+    .modal-item-title {
+        font-size: 0.9rem;
+    }
+
+    .modal-item-date {
+        font-size: 0.8rem;
+    }
+
+    .modal-info-display {
+        padding: 1.5rem 1rem;
+    }
+
+    .modal-info-main {
+        font-size: 1.5rem;
+    }
+
+    .modal-info-sub {
+        font-size: 0.85rem;
+    }
+}
     </style>
 </head>
 <body>
@@ -734,39 +904,47 @@
         <div class="hero-content">
             <h1 class="site-title">QUICK<br>INSTANT</h1>
             <p class="site-subtitle">Shun Tonegawa (shunature)</p>
-            <div id="heavy-rotation-badge" class="weather-badge">
-                <svg class="weather-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
-                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
-                </svg>
-                <span id="heavy-rotation-status"></span>
-            <div class="heavy-rotation-trigger" onclick="openHeavyRotation()">
-                今月のヘビロテをチェック
-            </div>
-        </div>
-            <div id="weather-badge" class="weather-badge">
-                <span class="weather-icon"></span>
-                <span id="weather-status">Syncing Atmosphere...</span>
-            </div>
             
-            <div class="counter-badge">
-                <span style="font-size: 1.2rem; font-weight: 800; font-family: 'Courier New', monospace; letter-spacing: 0.1em;" id="visitor-count">--------</span>
-                <span style="margin-left: 0.5rem; font-size: 0.85rem; opacity: 0.7;">visitors</span>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-card-circle" onclick="openHeavyRotation()">
+                        <svg class="info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                        </svg>
+                    </div>
+                    <span class="info-label-text">ヘビロテ</span>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-card-circle" onclick="openWeatherModal()">
+                        <span class="weather-icon info-icon"></span>
+                    </div>
+                    <span class="info-label-text">天気</span>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-card-circle" onclick="openVisitorsModal()">
+                        <svg class="info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <span class="info-label-text">訪問者</span>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-card-circle" onclick="openUpdatesModal()">
+                        <svg class="info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                    </div>
+                    <span class="info-label-text">更新</span>
+                </div>
             </div>
-
-            <!-- 🆕 Updates Section 追加 -->
-<div class="updates-section">
-    <div class="updates-badge">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-        </svg>
-        Latest Update
-    </div>
-    <div id="updates-list" class="updates-list">
-        <div class="loading-placeholder"></div>
-    </div>
-</div>
         </div>
     </section>
 
@@ -805,9 +983,10 @@
     </div>
 
     <div class="section-header-with-more">
-        <h2 class="section-title">Voices 
-            <a href="https://understood-helmet-14b.notion.site/3014a217523980dca309f5381d12bb16?pvs=105" target="_blank" style="font-size: 1rem; font-family: var(--font-body); font-weight: 500; color: var(--text-secondary); text-decoration: none; margin-left: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">Message to Shun →</a>
-        </h2>
+        <div>
+            <h2 class="section-title">Voices</h2>
+            <a href="https://understood-helmet-14b.notion.site/3014a217523980dca309f5381d12bb16?pvs=105" target="_blank" style="display: block; font-size: 0.9rem; color: var(--text-secondary); text-decoration: none; margin-top: 0.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">Message to Shun →</a>
+        </div>
         <button class="more-button" onclick="openPodcastModal()">もっと見る</button>
     </div>
     <div id="podcast-grid" class="content-grid">
@@ -864,6 +1043,65 @@
     </div>
 </div>
 
+<div id="updatesModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeUpdatesModal()">&times;</span>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            Update History
+        </h2>
+        <div id="updatesModalList" class="modal-list">
+            <div class="loading-placeholder"></div>
+        </div>
+    </div>
+</div>
+
+<div id="weatherModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeWeatherModal()">&times;</span>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            Weather in Tokyo
+        </h2>
+        <div class="modal-info-display">
+            <p id="weather-modal-status" class="modal-info-main">Loading...</p>
+            <p class="modal-info-sub">Current weather conditions</p>
+        </div>
+    </div>
+</div>
+
+<div id="visitorsModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeVisitorsModal()">&times;</span>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Visitor Count
+        </h2>
+        <div class="modal-info-display">
+            <p id="visitor-modal-count" class="modal-info-main" style="font-family: 'Courier New', monospace; letter-spacing: 0.1em;">--------</p>
+            <p class="modal-info-sub">Total visitors</p>
+        </div>
+    </div>
+</div>
+
 <div id="footer-placeholder"></div>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SRDPDNBZ18"></script>
@@ -886,14 +1124,30 @@
                 
                 // 8桁ゼロパディング
                 const count = String(data.count).padStart(8, '0');
-                document.getElementById('visitor-count').textContent = count;
+                document.getElementById('visitor-modal-count').textContent = count;
             } catch (e) {
                 console.error('Counter error:', e);
-                document.getElementById('visitor-count').textContent = '--------';
+                document.getElementById('visitor-modal-count').textContent = '--------';
             }
         }
         // ページ読み込み時に実行
         updateCounter();
+        
+        function openWeatherModal() {
+            document.getElementById('weatherModal').classList.add('active');
+        }
+
+        function closeWeatherModal() {
+            document.getElementById('weatherModal').classList.remove('active');
+        }
+
+        function openVisitorsModal() {
+            document.getElementById('visitorsModal').classList.add('active');
+        }
+
+        function closeVisitorsModal() {
+            document.getElementById('visitorsModal').classList.remove('active');
+        }
     </script>
 
     <script>
@@ -906,23 +1160,49 @@ async function fetchUpdates() {
         const res = await fetch(`${WORKER_URL}?type=updates`);
         const data = await res.json();
         
-        const list = document.getElementById('updates-list');
-        if (data && data.length > 0) {
-            // slice(0, 3) で最新3件を表示。リンク（aタグ）は一切使いません。
-            list.innerHTML = data.slice(0, 3).map(item => `
-                <div class="update-item no-click">
-                    <div class="update-version">${item.version}</div>
-                    <div class="update-category">${item.category}</div>
-                    <div class="update-description">${item.description}</div>
-                </div>
-            `).join('');
-        } else {
-            list.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">更新情報はありません</p>';
+        const updateElement = document.getElementById('latest-update');
+        if (updateElement && data && data.length > 0) {
+            const latest = data[0];
+            updateElement.textContent = latest.version;
+        } else if (updateElement) {
+            updateElement.textContent = 'No updates';
         }
     } catch (e) {
         console.error('Updates error:', e);
-        document.getElementById('updates-list').innerHTML = '';
+        const updateElement = document.getElementById('latest-update');
+        if (updateElement) {
+            updateElement.textContent = 'Error';
+        }
     }
+}
+
+// Updates Modal
+let allUpdates = [];
+async function openUpdatesModal() {
+    const modal = document.getElementById('updatesModal');
+    modal.classList.add('active');
+    
+    if (allUpdates.length === 0) {
+        try {
+            const res = await fetch(`${WORKER_URL}?type=updates`);
+            allUpdates = await res.json();
+            
+            const list = document.getElementById('updatesModalList');
+            list.innerHTML = allUpdates.map(update => `
+                <div class="modal-item" style="cursor: default;">
+                    <div class="modal-item-label">${update.version}</div>
+                    <div class="modal-item-title">${update.category}</div>
+                    <div class="modal-item-date">${update.description}</div>
+                </div>
+            `).join('');
+        } catch (e) {
+            console.error('Updates modal error:', e);
+        }
+    }
+}
+
+function closeUpdatesModal() {
+    document.getElementById('updatesModal').classList.remove('active');
 }
 
         // Blog Modal
@@ -1025,7 +1305,7 @@ async function fetchUpdates() {
                     condition = "Cloudy";
                 }
 
-                document.getElementById('weather-status').textContent = `${condition} / ${temp}°C in Tokyo`;
+                document.getElementById('weather-modal-status').textContent = `${condition} / ${temp}°C`;
             } catch (e) {
                 console.error('Weather error:', e);
             }
@@ -1176,6 +1456,9 @@ document.addEventListener('click', (e) => {
     if (e.target.id === 'blogModal') closeBlogModal();
     if (e.target.id === 'podcastModal') closePodcastModal();
     if (e.target.id === 'heavyRotationModal') closeHeavyRotation();
+    if (e.target.id === 'updatesModal') closeUpdatesModal();
+    if (e.target.id === 'weatherModal') closeWeatherModal();
+    if (e.target.id === 'visitorsModal') closeVisitorsModal();
 });
 
 // ESCキーで閉じる
@@ -1184,6 +1467,9 @@ document.addEventListener('keydown', (e) => {
         closeBlogModal();
         closePodcastModal();
         closeHeavyRotation();
+        closeUpdatesModal();
+        closeWeatherModal();
+        closeVisitorsModal();
     }
 });
 
