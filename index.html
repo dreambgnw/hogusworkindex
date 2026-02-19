@@ -526,6 +526,202 @@
     color: var(--accent);
     margin-top: 0.25rem;
 }
+/* Updates Section */
+.updates-section {
+    max-width: 800px;
+    margin: 2rem auto 4rem;
+    padding: 0 2rem;
+}
+
+.updates-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards 1.1s;
+}
+
+.updates-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* リンクなしのアップデート項目用のスタイル */
+.update-item.no-click {
+    cursor: default; /* 指マークにしない */
+}
+
+.update-item.no-click:hover {
+    transform: none; /* 動かさない */
+    border-color: var(--border); /* 色を変えない（またはお好みで） */
+}
+
+.update-version {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--accent);
+    min-width: 4rem;
+}
+
+.update-category {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.update-description {
+    flex: 1;
+    color: var(--text-secondary);
+}
+
+/* Section Header with "More" button */
+.section-header-with-more {
+    max-width: 1400px;
+    margin: 4rem auto 2rem;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.more-button {
+    padding: 0.5rem 1.5rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.more-button:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: var(--accent);
+}
+
+.modal-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+}
+
+.modal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-item {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.modal-item:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+}
+
+.modal-item-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.modal-item-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.modal-item-date {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
     </style>
 </head>
 <body>
@@ -539,7 +735,10 @@
             <h1 class="site-title">QUICK<br>INSTANT</h1>
             <p class="site-subtitle">Shun Tonegawa (shunature)</p>
             <div id="heavy-rotation-badge" class="weather-badge">
-                <span class="weather-icon">🎧</span>
+                <svg class="weather-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
                 <span id="heavy-rotation-status"></span>
             <div class="heavy-rotation-trigger" onclick="openHeavyRotation()">
                 今月のヘビロテをチェック
@@ -554,6 +753,20 @@
                 <span style="font-size: 1.2rem; font-weight: 800; font-family: 'Courier New', monospace; letter-spacing: 0.1em;" id="visitor-count">--------</span>
                 <span style="margin-left: 0.5rem; font-size: 0.85rem; opacity: 0.7;">visitors</span>
             </div>
+
+            <!-- 🆕 Updates Section 追加 -->
+<div class="updates-section">
+    <div class="updates-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+        Latest Update
+    </div>
+    <div id="updates-list" class="updates-list">
+        <div class="loading-placeholder"></div>
+    </div>
+</div>
         </div>
     </section>
 
@@ -581,8 +794,9 @@
         </div>
     </section>
 
-    <div class="section-header">
+    <div class="section-header-with-more">
         <h2 class="section-title">Blog</h2>
+        <button class="more-button" onclick="openBlogModal()">もっと見る</button>
     </div>
     <div id="blog-grid" class="content-grid">
         <div class="loading-placeholder"></div>
@@ -590,10 +804,11 @@
         <div class="loading-placeholder"></div>
     </div>
 
-    <div class="section-header">
+    <div class="section-header-with-more">
         <h2 class="section-title">Voices 
             <a href="https://understood-helmet-14b.notion.site/3014a217523980dca309f5381d12bb16?pvs=105" target="_blank" style="font-size: 1rem; font-family: var(--font-body); font-weight: 500; color: var(--text-secondary); text-decoration: none; margin-left: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">Message to Shun →</a>
         </h2>
+        <button class="more-button" onclick="openPodcastModal()">もっと見る</button>
     </div>
     <div id="podcast-grid" class="content-grid">
         <div class="loading-placeholder"></div>
@@ -602,8 +817,48 @@
     <div id="heavyRotationModal" class="modal">
     <div class="modal-content">
         <span class="modal-close" onclick="closeHeavyRotation()">&times;</span>
-        <h2 class="modal-title">🎵 今月のヘビロテ</h2>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+            </svg>
+            今月のヘビロテ
+        </h2>
         <div id="topTracksList" class="top-tracks-list">
+            <div class="loading-placeholder"></div>
+        </div>
+    </div>
+</div>
+
+<div id="blogModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeBlogModal()">&times;</span>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            All Blog Posts
+        </h2>
+        <div id="blogModalList" class="modal-list">
+            <div class="loading-placeholder"></div>
+        </div>
+    </div>
+</div>
+
+<div id="podcastModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closePodcastModal()">&times;</span>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+            All Episodes
+        </h2>
+        <div id="podcastModalList" class="modal-list">
             <div class="loading-placeholder"></div>
         </div>
     </div>
@@ -645,11 +900,95 @@
         const WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/";
         const NEW_THRESHOLD_HOURS = 3;
 
+// Updates 取得（リンクなし版）
+async function fetchUpdates() {
+    try {
+        const res = await fetch(`${WORKER_URL}?type=updates`);
+        const data = await res.json();
+        
+        const list = document.getElementById('updates-list');
+        if (data && data.length > 0) {
+            // slice(0, 3) で最新3件を表示。リンク（aタグ）は一切使いません。
+            list.innerHTML = data.slice(0, 3).map(item => `
+                <div class="update-item no-click">
+                    <div class="update-version">${item.version}</div>
+                    <div class="update-category">${item.category}</div>
+                    <div class="update-description">${item.description}</div>
+                </div>
+            `).join('');
+        } else {
+            list.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">更新情報はありません</p>';
+        }
+    } catch (e) {
+        console.error('Updates error:', e);
+        document.getElementById('updates-list').innerHTML = '';
+    }
+}
+
+        // Blog Modal
+        let allBlogPosts = [];
+        async function openBlogModal() {
+            const modal = document.getElementById('blogModal');
+            modal.classList.add('active');
+            
+            if (allBlogPosts.length === 0) {
+                try {
+                    const res = await fetch(`${WORKER_URL}?type=blog`);
+                    allBlogPosts = await res.json();
+                    
+                    const list = document.getElementById('blogModalList');
+                    list.innerHTML = allBlogPosts.map(post => `
+                        <div class="modal-item" onclick="window.open('${post.url}', '_blank')">
+                            <div class="modal-item-label">Blog Post</div>
+                            <div class="modal-item-title">${post.title}</div>
+                            <div class="modal-item-date">${post.date}</div>
+                        </div>
+                    `).join('');
+                } catch (e) {
+                    console.error('Blog modal error:', e);
+                }
+            }
+        }
+
+        function closeBlogModal() {
+            document.getElementById('blogModal').classList.remove('active');
+        }
+
+        // Podcast Modal
+        let allPodcastEpisodes = [];
+        async function openPodcastModal() {
+            const modal = document.getElementById('podcastModal');
+            modal.classList.add('active');
+            
+            if (allPodcastEpisodes.length === 0) {
+                try {
+                    const res = await fetch(`${WORKER_URL}?type=podcast`);
+                    allPodcastEpisodes = await res.json();
+                    
+                    const list = document.getElementById('podcastModalList');
+                    list.innerHTML = allPodcastEpisodes.map(episode => `
+                        <div class="modal-item" onclick="window.open('${episode.url}', '_blank')">
+                            <div class="modal-item-label">Episode ${episode.episodeId || ''}</div>
+                            <div class="modal-item-title">${episode.title}</div>
+                            <div class="modal-item-date">${episode.date}</div>
+                        </div>
+                    `).join('');
+                } catch (e) {
+                    console.error('Podcast modal error:', e);
+                }
+            }
+        }
+
+        function closePodcastModal() {
+            document.getElementById('podcastModal').classList.remove('active');
+        }
+
         window.addEventListener('load', async () => {
             await Promise.all([
                 fetchContent(WORKER_URL, 'blog-grid', 'blog'),
                 fetchContent(`${WORKER_URL}?type=podcast`, 'podcast-grid', 'podcast'),
-                updateWeather()
+                updateWeather(),
+                fetchUpdates()
             ]);
 
             setTimeout(() => {
@@ -832,20 +1171,22 @@ function closeHeavyRotation() {
     modal.classList.remove('active');
 }
 
-// モーダル外クリックで閉じる
+// Modal外クリックで閉じる
 document.addEventListener('click', (e) => {
-    const modal = document.getElementById('heavyRotationModal');
-    if (e.target === modal) {
-        closeHeavyRotation();
-    }
+    if (e.target.id === 'blogModal') closeBlogModal();
+    if (e.target.id === 'podcastModal') closePodcastModal();
+    if (e.target.id === 'heavyRotationModal') closeHeavyRotation();
 });
 
 // ESCキーで閉じる
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+        closeBlogModal();
+        closePodcastModal();
         closeHeavyRotation();
     }
 });
+
     </script>
     <script src="common.js"></script>
 </body>
