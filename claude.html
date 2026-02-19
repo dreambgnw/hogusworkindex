@@ -102,6 +102,7 @@
         }
     </style>
 </head>
+<script src="common.js"></script>
 <body>
     <div id="header-placeholder"></div>
 
@@ -112,7 +113,10 @@
                 <h1 class="page-title" style="text-align: center;">Claude Sonnet 4.5</h1>
                 <h2 class="section-title">制作コンセプト</h2>
                 <p class="text">
-                    QUICK INSTANTは、「すぐ届く、いま感じる」をコンセプトに、1ページスクロール型の個人サイトとして設計されました。複雑なナビゲーションを排除し、訪問者が必要な情報に素早くアクセスできることを重視しています。
+                    QUICK INSTANTは、「すぐ届く、いま感じる」をコンセプトに設計された個人サイトです。当初は1ページスクロール型として開発されましたが、現在は7ページ構成のマルチページサイトに進化しています。
+                </p>
+                <p class="text">
+                    各ページは統一されたデザインシステムを持ちながらも、独自の目的を持っています：トップページ(index.html)、プロフィール(about.html)、リンク集(links.html)、音楽履歴(music.html)、年表(years.html)、技術仕様(claude.html)、そして404ページ。全てのページが共通のヘッダー・フッターで統一され、シームレスなナビゲーション体験を提供します。
                 </p>
             </section>
 
@@ -126,10 +130,24 @@
                     本文: M PLUS Rounded 1c (読みやすい丸ゴシック)<br>
                     Google Fonts経由で読み込み、日本語でもしっかり表示</li>
                     
+                    <li><strong>統一ヘッダー・フッター</strong><br>
+                    全7ページで共通のナビゲーション<br>
+                    common.css/common.jsによるモジュール化<br>
+                    戻る矢印SVG、レスポンシブハンバーガーメニュー実装</li>
+                    
                     <li><strong>リアルタイム天気連動</strong><br>
                     Open-Meteo APIで東京(板橋区)の天気データ取得<br>
                     晴れ/曇り/雨/雪に応じてエフェクト表示<br>
                     雨の日は雨粒が降り、雪の日は雪が舞う視覚演出</li>
+                    
+                    <li><strong>今月のヘビロテ</strong><br>
+                    Last.fm APIでトップトラック取得<br>
+                    モーダル表示、クリックで曲詳細へ遷移<br>
+                    アルバムアート付き、再生回数表示</li>
+                    
+                    <li><strong>イースターエッグ</strong><br>
+                    タイトルを3回タップで秘密ページに遷移<br>
+                    500ms以内のタップ判定、カウントリセット機能</li>
                     
                     <li><strong>ダーク/ライトモード</strong><br>
                     手動切り替えボタンを実装<br>
@@ -181,13 +199,54 @@
             <section class="content-section">
                 <h2 class="section-title">開発期間</h2>
                 <p class="text">
-                    2026年2月14日〜16日の3日間で開発。複数回の改良を経て完成しました。
+                    2026年2月14日〜16日の3日間で開発。初日にv1を完成させ、2日目に複数ページへの拡張とNotion API連携を実装、3日目にモジュール化とイースターエッグを追加しました。
+                </p>
+                <p class="text">
+                    開発はShun TonegawaとClaude Sonnet 4.5がリアルタイムで協力し、要件定義からデザイン、実装、デプロイまで一貫して行いました。
                 </p>
             </section>
         </main>
     </div>
 
 <div id="footer-placeholder"></div>
-    <script src="common.js"></script>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icons = document.querySelectorAll('.theme-icon');
+            
+            const currentTheme = html.getAttribute('data-theme') ||
+                                (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            icons.forEach(icon => {
+                icon.textContent = newTheme === 'light' ? '☀️' : '🌙';
+            });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+            menu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+            
+            document.documentElement.setAttribute('data-theme', theme);
+            
+            const icons = document.querySelectorAll('.theme-icon');
+            icons.forEach(icon => {
+                icon.textContent = theme === 'light' ? '☀️' : '🌙';
+            });
+        })();
+    </script>
 </body>
 </html>
