@@ -18,45 +18,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* Weather Effects */
-        #weather-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.6;
-        }
-
-        .rain-drop {
-            position: absolute;
-            background: white;
-            width: 1px;
-            height: 20px;
-            opacity: 0.3;
-            animation: rain linear infinite;
-        }
-
-        @keyframes rain {
-            to { transform: translateY(100vh); }
-        }
-
-        .snow-flake {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.7;
-            animation: snow linear infinite;
-        }
-
-        @keyframes snow {
-            0% { transform: translateY(-10px) translateX(0); }
-            50% { transform: translateY(50vh) translateX(-20px); }
-            100% { transform: translateY(100vh) translateX(0); }
-        }
-
         /* Loader */
         #loader {
             position: fixed;
@@ -898,7 +859,6 @@
 <div id="header-placeholder"></div>
     
     <div id="loader"><span>Always, Chillout.</span></div>
-    <div id="weather-overlay"></div>
 
     <section class="hero">
         <div class="hero-content">
@@ -1288,8 +1248,6 @@ function closeUpdatesModal() {
                 const temp = Math.round(data.current.temperature_2m);
 
                 let condition = "Clear";
-                const overlay = document.getElementById('weather-overlay');
-                overlay.innerHTML = '';
 
                 if (code === 0) {
                     condition = "Clear";
@@ -1297,10 +1255,8 @@ function closeUpdatesModal() {
                     condition = "Fair";
                 } else if (code >= 51 && code <= 67 || code >= 80) {
                     condition = "Rain";
-                    createRain();
                 } else if (code >= 71 && code <= 77) {
                     condition = "Snow";
-                    createSnow();
                 } else {
                     condition = "Cloudy";
                 }
@@ -1308,33 +1264,6 @@ function closeUpdatesModal() {
                 document.getElementById('weather-modal-status').textContent = `${condition} / ${temp}°C`;
             } catch (e) {
                 console.error('Weather error:', e);
-            }
-        }
-
-        function createRain() {
-            const overlay = document.getElementById('weather-overlay');
-            for (let i = 0; i < 50; i++) {
-                const drop = document.createElement('div');
-                drop.className = 'rain-drop';
-                drop.style.left = Math.random() * 100 + 'vw';
-                drop.style.animationDuration = (Math.random() * 0.5 + 0.3) + 's';
-                drop.style.animationDelay = Math.random() * 2 + 's';
-                overlay.appendChild(drop);
-            }
-        }
-
-        function createSnow() {
-            const overlay = document.getElementById('weather-overlay');
-            for (let i = 0; i < 30; i++) {
-                const flake = document.createElement('div');
-                flake.className = 'snow-flake';
-                const size = Math.random() * 4 + 2;
-                flake.style.width = size + 'px';
-                flake.style.height = size + 'px';
-                flake.style.left = Math.random() * 100 + 'vw';
-                flake.style.animationDuration = (Math.random() * 3 + 4) + 's';
-                flake.style.animationDelay = Math.random() * 5 + 's';
-                overlay.appendChild(flake);
             }
         }
 
