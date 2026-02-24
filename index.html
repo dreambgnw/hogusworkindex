@@ -18,7 +18,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* Loader */
         #loader {
             position: fixed;
             top: 0;
@@ -30,26 +29,58 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
-        #loader span {
-            font-size: clamp(2rem, 8vw, 5rem);
-            font-weight: 800;
-            font-family: var(--font-display);
+        #loader.fade-out {
             opacity: 0;
-            animation: slideInFromLeft 1s ease forwards;
+            transform: scale(1.05);
         }
 
-        @keyframes slideInFromLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .loader-container {
+            width: 400px;
+            height: 400px;
+        }
+
+        .layer {
+            transform-origin: center;
+            opacity: 0;
+            animation-duration: 1.75s;
+            animation-iteration-count: none;
+            animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .center-fill {
+            animation-name: centerStep;
+            fill: var(--accent);
+        }
+
+        .side-outline-left {
+            animation-name: slideOffsetLeft;
+            stroke: var(--accent);
+        }
+
+        .side-outline-right {
+            animation-name: slideOffsetRight;
+            stroke: var(--accent);
+        }
+
+        @keyframes centerStep {
+            0% { opacity: 0; transform: scale(0.98); }
+            15%, 85% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.02); }
+        }
+
+        @keyframes slideOffsetLeft {
+            0%, 10% { opacity: 0; transform: translate(0, 0); }
+            30%, 70% { opacity: 0.8; transform: translate(-10px, -10px); }
+            85%, 100% { opacity: 0; transform: translate(-10px, -10px); }
+        }
+
+        @keyframes slideOffsetRight {
+            0%, 10% { opacity: 0; transform: translate(0, 0); }
+            30%, 70% { opacity: 0.8; transform: translate(10px, 10px); }
+            85%, 100% { opacity: 0; transform: translate(10px, 10px); }
         }
 
         /* Hero Section */
@@ -917,7 +948,22 @@
 <div id="header-placeholder"></div>
     
     <div id="loader">
-        <span>Always, Chillout.</span>
+        <div class="loader-container">
+            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <path id="panel-shape" d="M100 150 L300 150 L300 230 L100 270 Z" />
+                </defs>
+                <g class="layer side-outline-left" stroke-width="1.5" fill="none">
+                    <use href="#panel-shape" />
+                </g>
+                <g class="layer side-outline-right" stroke-width="1.5" fill="none">
+                    <use href="#panel-shape" />
+                </g>
+                <g class="layer center-fill">
+                    <use href="#panel-shape" />
+                </g>
+            </svg>
+        </div>
     </div>
 
     <section class="hero">
@@ -1314,7 +1360,7 @@ function closeUpdatesModal() {
 
             setTimeout(() => {
                 const loader = document.getElementById('loader');
-                loader.style.opacity = '0';
+                loader.classList.add('fade-out');
                 loader.addEventListener('transitionend', () => {
                     loader.style.display = 'none';
                 }, { once: true });
