@@ -1502,14 +1502,20 @@ async function loadLifeLog() {
             // 日付フォーマット
             const date = new Date(post.date);
             const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
-            
+            let bodyText = post.text || '';
+
+if (post.title && bodyText.startsWith(post.title)) {
+    bodyText = bodyText.replace(post.title, '').trim();
+}
+
             card.innerHTML = `
-${post.image ? `<img src="${post.image}" alt="${post.title}" class="lifelog-image">` : ''}                <div class="podcast-info">
-                    <h3 class="podcast-title">${post.title}</h3>
-                    ${post.text ? `<p class="lifelog-text">${post.text}</p>` : ''}
-                    <p class="lifelog-date">${formattedDate}</p>
-                </div>
-            `;
+${post.image ? `<img src="${post.image}" alt="${post.title}" class="lifelog-image">` : ''}
+<div class="podcast-info">
+    <h3 class="podcast-title">${post.title}</h3>
+    ${bodyText ? `<p class="lifelog-text">${bodyText}</p>` : ''}
+    <p class="lifelog-date">${formattedDate}</p>
+</div>
+`;
             
             container.appendChild(card);
         });
