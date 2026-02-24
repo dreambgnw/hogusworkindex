@@ -37,13 +37,19 @@
             font-size: clamp(2rem, 8vw, 5rem);
             font-weight: 800;
             font-family: var(--font-display);
-            animation: loaderPulse 2s ease-in-out forwards;
+            opacity: 0;
+            animation: slideInFromLeft 1s ease forwards;
         }
 
-        @keyframes loaderPulse {
-            0%, 20% { opacity: 0; transform: scale(0.95); }
-            40%, 60% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(1.05); }
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         /* Hero Section */
@@ -81,9 +87,20 @@
             font-size: clamp(1rem, 2vw, 1.5rem);
             font-weight: 500;
             color: var(--text-secondary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0;
             opacity: 0;
             animation: fadeInUp 0.8s ease forwards 0.5s;
+        }
+
+        .version-badge {
+            position: absolute;
+            right: 0;
+            bottom: -0.5rem;
+            font-size: 3rem;;
+            color: var(--text-secondary);
+            opacity: 0;
+            font-weight: 600;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
         }
 
         .weather-badge {
@@ -891,12 +908,17 @@
 <body>
 <div id="header-placeholder"></div>
     
-    <div id="loader"><span>Always, Chillout.</span></div>
+    <div id="loader">
+        <span>Always, Chillout.</span>
+    </div>
 
     <section class="hero">
         <div class="hero-content">
             <h1 class="site-title">QUICK<br>INSTANT</h1>
-            <p class="site-subtitle">Shun Tonegawa (shunature)</p>
+            <div style="position: relative; margin-bottom: 2rem;">
+                <p class="site-subtitle">Shun Tonegawa (shunature)</p>
+                <span id="version-badge" class="version-badge"></span>
+            </div>
             
             <div class="info-grid">
                 <div class="info-item">
@@ -1170,18 +1192,19 @@ async function fetchUpdates() {
         const res = await fetch(`${WORKER_URL}?type=updates`);
         const data = await res.json();
         
-        const updateElement = document.getElementById('latest-update');
-        if (updateElement && data && data.length > 0) {
+        if (data && data.length > 0) {
             const latest = data[0];
-            updateElement.textContent = latest.version;
-        } else if (updateElement) {
-            updateElement.textContent = 'No updates';
+            // バージョンバッジを更新
+            const versionBadge = document.getElementById('version-badge');
+            if (versionBadge) {
+                versionBadge.textContent = latest.version;
+            }
         }
     } catch (e) {
         console.error('Updates error:', e);
-        const updateElement = document.getElementById('latest-update');
-        if (updateElement) {
-            updateElement.textContent = 'Error';
+        const versionBadge = document.getElementById('version-badge');
+        if (versionBadge) {
+            versionBadge.textContent = '';
         }
     }
 }
