@@ -176,10 +176,9 @@
         }
 
         .weather-icon {
-            width: 16px;
-            height: 16px;
-            background: var(--accent);
-            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
         }
 
         /* Info Grid */
@@ -987,7 +986,18 @@
                 
                 <div class="info-item">
                     <div class="info-card-circle" onclick="openWeatherModal()">
-                        <span class="weather-icon info-icon"></span>
+                        <svg id="weather-icon" class="weather-icon info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <!-- デフォルトは晴れアイコン -->
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
                     </div>
                     <span class="info-label-text">天気</span>
                 </div>
@@ -1375,17 +1385,60 @@ function closeUpdatesModal() {
                 const temp = Math.round(data.current.temperature_2m);
 
                 let condition = "Clear";
+                let iconSVG = '';
 
                 if (code === 0) {
                     condition = "Clear";
+                    // 晴れ（太陽）
+                    iconSVG = `
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    `;
                 } else if (code >= 1 && code <= 3) {
                     condition = "Fair";
+                    // 曇り（雲）
+                    iconSVG = `
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                    `;
                 } else if (code >= 51 && code <= 67 || code >= 80) {
                     condition = "Rain";
+                    // 雨（雲と雨粒）
+                    iconSVG = `
+                        <line x1="16" y1="13" x2="16" y2="21"></line>
+                        <line x1="8" y1="13" x2="8" y2="21"></line>
+                        <line x1="12" y1="15" x2="12" y2="23"></line>
+                        <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path>
+                    `;
                 } else if (code >= 71 && code <= 77) {
                     condition = "Snow";
+                    // 雪（雪の結晶）
+                    iconSVG = `
+                        <line x1="12" y1="2" x2="12" y2="22"></line>
+                        <path d="m17 7-5 5-5-5"></path>
+                        <path d="m17 17-5-5-5 5"></path>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="m7 7 5 5-5 5"></path>
+                        <path d="m17 7-5 5 5 5"></path>
+                    `;
                 } else {
                     condition = "Cloudy";
+                    // 曇り
+                    iconSVG = `
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                    `;
+                }
+
+                // アイコンを更新
+                const weatherIcon = document.getElementById('weather-icon');
+                if (weatherIcon) {
+                    weatherIcon.innerHTML = iconSVG;
                 }
 
                 document.getElementById('weather-modal-status').textContent = `${condition} / ${temp}°C`;
