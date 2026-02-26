@@ -22,19 +22,6 @@
         }
 
         .error-header {
-            position: relative;
-            padding: 3rem 2rem;
-            margin: 2rem auto 4rem;
-            max-width: 1200px;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-radius: 24px;
-            overflow: hidden;
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-            border: 1px solid var(--border);
             text-align: center;
         }
 
@@ -44,19 +31,12 @@
             font-weight: 800;
             line-height: 1;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--text-primary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-            z-index: 2;
+            letter-spacing: -0.02em;
         }
 
         .error-subtitle {
             font-size: 1.2rem;
             color: var(--text-secondary);
-            position: relative;
-            z-index: 2;
         }
 
         .error-message {
@@ -112,13 +92,6 @@
             .error-container {
                 padding: 1rem 1.5rem 3rem;
             }
-
-            .error-header {
-                padding: 2rem 1.5rem;
-                margin: 1rem 1rem 3rem;
-                min-height: 160px;
-                border-radius: 16px;
-            }
         }
     </style>
 </head>
@@ -126,8 +99,8 @@
     <div id="header-placeholder"></div>
 
     <div class="error-container">
-        <header class="error-header">
-            <div class="error-code">404</div>
+        <header class="error-header page-header">
+            <h1 class="error-code">404</h1>
             <p class="error-subtitle">Page Not Found</p>
         </header>
         
