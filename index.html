@@ -1360,12 +1360,25 @@ function closeUpdatesModal() {
             document.getElementById('podcastModal').classList.remove('active');
         }
 
+        // ヘビロテデータをキャッシュ
+        let cachedTopTracks = null;
+
+        async function preloadTopTracks() {
+            try {
+                const res = await fetch('https://notion-proxy.jaredforfes.workers.dev/?type=toptracks&period=1month&limit=10');
+                cachedTopTracks = await res.json();
+            } catch (e) {
+                console.error('Preload top tracks error:', e);
+            }
+        }
+
         window.addEventListener('load', async () => {
             await Promise.all([
                 fetchContent(WORKER_URL, 'blog-grid', 'blog'),
                 fetchContent(`${WORKER_URL}?type=podcast`, 'podcast-grid', 'podcast'),
                 updateWeather(),
-                fetchUpdates()
+                fetchUpdates(),
+                preloadTopTracks() // ヘビロテデータを事前読み込み
             ]);
 
             setTimeout(() => {
@@ -1532,12 +1545,30 @@ function closeUpdatesModal() {
     const modal = document.getElementById('heavyRotationModal');
     modal.classList.add('active');
     
-    // データ取得
+    const tracksList = document.getElementById('topTracksList');
+    
+    // キャッシュがあればすぐ表示
+    if (cachedTopTracks) {
+        tracksList.innerHTML = cachedTopTracks.map((track, index) => `
+            <div class="track-item" onclick="window.open('${track.url}', '_blank')">
+                <div class="track-number">${index + 1}</div>
+                ${track.image ? `<img src="${track.image}" alt="${track.name}" class="track-image">` : ''}
+                <div class="track-info">
+                    <div class="track-name">${track.name}</div>
+                    <div class="track-artist">${track.artist}</div>
+                    <div class="track-playcount">${track.playcount} plays</div>
+                </div>
+            </div>
+        `).join('');
+        return;
+    }
+    
+    // キャッシュがない場合は取得
     try {
         const res = await fetch('https://notion-proxy.jaredforfes.workers.dev/?type=toptracks&period=1month&limit=10');
         const tracks = await res.json();
+        cachedTopTracks = tracks;
         
-        const tracksList = document.getElementById('topTracksList');
         tracksList.innerHTML = tracks.map((track, index) => `
             <div class="track-item" onclick="window.open('${track.url}', '_blank')">
                 <div class="track-number">${index + 1}</div>
@@ -1551,7 +1582,7 @@ function closeUpdatesModal() {
         `).join('');
     } catch (e) {
         console.error('Top tracks error:', e);
-        document.getElementById('topTracksList').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">データの取得に失敗しました</p>';
+        tracksList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">データの取得に失敗しました</p>';
     }
 }
 
