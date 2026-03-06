@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUICK INSTANT</title>
+
+    <link rel="icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://media.ffnet.work/asset/II_diagonal_Base.png">
+    <meta property="og:title" content="QUICK INSTANT">
+    <meta property="og:description" content="Always, Chillout. Shun Tonegawa's Personal Log.">
+    <meta property="og:image" content="https://media.ffnet.work/asset/II_diagonal_Base.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="/common.css">
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        #loader.fade-out {
+            opacity: 0;
+            transform: scale(1.05);
+        }
+
+        .loader-container {
+            width: 400px;
+            height: 400px;
+        }
+
+        .layer {
+            transform-origin: center;
+            opacity: 0;
+            animation-duration: 1.75s;
+            animation-iteration-count: none;
+            animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .center-fill {
+            animation-name: centerStep;
+            fill: var(--accent);
+        }
+
+        .side-outline-left {
+            animation-name: slideOffsetLeft;
+            stroke: var(--accent);
+        }
+
+        .side-outline-right {
+            animation-name: slideOffsetRight;
+            stroke: var(--accent);
+        }
+
+        @keyframes centerStep {
+            0% { opacity: 0; transform: scale(0.98); }
+            15%, 85% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.02); }
+        }
+
+        @keyframes slideOffsetLeft {
+            0%, 10% { opacity: 0; transform: translate(0, 0); }
+            30%, 70% { opacity: 0.8; transform: translate(-10px, -10px); }
+            85%, 100% { opacity: 0; transform: translate(-10px, -10px); }
+        }
+
+        @keyframes slideOffsetRight {
+            0%, 10% { opacity: 0; transform: translate(0, 0); }
+            30%, 70% { opacity: 0.8; transform: translate(10px, 10px); }
+            85%, 100% { opacity: 0; transform: translate(10px, 10px); }
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 2rem;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .site-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 12vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 0.95;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.3s;
+        }
+
+        .site-subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.5s;
+        }
+
+        .version-badge {
+            position: absolute;
+            right: 0;
+            bottom: -1.5rem;
+            font-size: 2rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            font-weight: 600;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+        }
+
+        @media (max-width: 768px) {
+            .version-badge {
+                font-size: 1rem;
+                bottom: -1.2rem;
+            }
+        }
+
+        .weather-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.7s;
+        }
+
+        .counter-badge {
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.9s;
+        }
+
+        .counter-badge img {
+            filter: brightness(1.1);
+        }
+
+        .weather-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto 2rem;
+            padding: 0 2rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.7s;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .info-card-circle:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(246, 193, 60, 0.2);
+        }
+
+        .info-icon {
+            flex-shrink: 0;
+            color: var(--accent);
+        }
+
+        .info-label-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                gap: 1rem;
+                padding: 0 1.5rem;
+            }
+            
+            .info-card-circle {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .info-icon {
+                width: 18px;
+                height: 18px;
+            }
+
+            .info-label-text {
+                font-size: 0.7rem;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 1s;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .content-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 1rem;
+        }
+
+        .card-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .new-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 800;
+        }
+
+        .card-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .card-title {
+            position: relative;
+            z-index: 1;
+            font-family: var(--font-body);
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-excerpt {
+            position: relative;
+            z-index: 1;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Section Headers */
+        .section-header {
+            max-width: 1400px;
+            margin: 4rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* Profile Section */
+        .profile-section {
+            max-width: 800px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .profile-name {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .profile-bio {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-section {
+                margin: 4rem auto;
+                padding: 0 1.5rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1.5rem 4rem;
+            }
+
+            .section-header-with-more {
+                padding: 0 1.5rem;
+            }
+        }
+
+        /* Loading State */
+        .loading-placeholder {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.3; }
+        }
+    .heavy-rotation-trigger {
+    display: inline-block;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards 0.6s;
+}
+
+.heavy-rotation-trigger:hover {
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: var(--accent);
+}
+
+.modal-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 1.5rem;
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .modal-close {
+        right: 1rem;
+        top: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        padding-right: 2rem;
+    }
+}
+
+.top-tracks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.track-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.track-item:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+}
+
+.track-number {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--accent);
+    min-width: 2rem;
+}
+
+.track-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.track-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.track-name {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.track-artist {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.track-playcount {
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+    .track-item {
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+
+    .track-number {
+        font-size: 1.2rem;
+        min-width: 1.5rem;
+    }
+
+    .track-image {
+        width: 50px;
+        height: 50px;
+    }
+
+    .track-name {
+        font-size: 0.9rem;
+    }
+
+    .track-artist {
+        font-size: 0.8rem;
+    }
+
+    .track-playcount {
+        font-size: 0.75rem;
+    }
+}
+/* Updates Section */
+.updates-section {
+    max-width: 800px;
+    margin: 2rem auto 4rem;
+    padding: 0 2rem;
+}
+
+.updates-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards 1.1s;
+}
+
+.updates-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* リンクなしのアップデート項目用のスタイル */
+.update-item.no-click {
+    cursor: default; /* 指マークにしない */
+}
+
+.update-item.no-click:hover {
+    transform: none; /* 動かさない */
+    border-color: var(--border); /* 色を変えない（またはお好みで） */
+}
+
+.update-version {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--accent);
+    min-width: 4rem;
+}
+
+.update-category {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.update-description {
+    flex: 1;
+    color: var(--text-secondary);
+}
+
+/* Section Header with "More" button */
+.section-header-with-more {
+    max-width: 1400px;
+    margin: 4rem auto 2rem;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.more-button {
+    padding: 0.5rem 1.5rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.more-button:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: var(--accent);
+}
+
+.modal-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+}
+
+.modal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-item {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.modal-item:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+}
+
+.modal-item-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.modal-item-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.modal-item-date {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.modal-info-display {
+    text-align: center;
+    padding: 2rem;
+}
+
+.modal-info-main {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.modal-info-sub {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .modal-list {
+        gap: 0.75rem;
+    }
+
+    .modal-item {
+        padding: 0.75rem;
+    }
+
+    .modal-item-label {
+        font-size: 0.7rem;
+    }
+
+    .modal-item-title {
+        font-size: 0.9rem;
+    }
+
+    .modal-item-date {
+        font-size: 0.8rem;
+    }
+
+    .modal-info-display {
+        padding: 1.5rem 1rem;
+    }
+
+    .modal-info-main {
+        font-size: 1.5rem;
+    }
+
+    .modal-info-sub {
+        font-size: 0.85rem;
+    }
+}
+
+#lifelog-grid .podcast-card {
+    cursor: pointer;
+}
+
+#lifelog-grid .podcast-card:hover {
+    transform: translateY(-4px);
+}
+/*
+.lifelog-image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px 12px 0 0;
+}
+
+.lifelog-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.lifelog-date {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+    */
+    </style>
+</head>
+<body>
+<div id="header-placeholder"></div>
+    
+    <div id="loader">
+        <div class="loader-container">
+            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <path id="panel-shape" d="M100 150 L300 150 L300 230 L100 270 Z" />
+                </defs>
+                <g class="layer side-outline-left" stroke-width="1.5" fill="none">
+                    <use href="#panel-shape" />
+                </g>
+                <g class="layer side-outline-right" stroke-width="1.5" fill="none">
+                    <use href="#panel-shape" />
+                </g>
+                <g class="layer center-fill">
+                    <use href="#panel-shape" />
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="site-title">QUICK<br>INSTANT</h1>
+            <div style="position: relative; margin-bottom: 2rem;">
+                <p class="site-subtitle">Shun Tonegawa (shunature)</p>
+                <span id="version-badge" class="version-badge"></span>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-card-circle" onclick="openHeavyRotation()">
+                        <svg class="info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                        </svg>
+                    </div>
+                    <span class="info-label-text">ヘビロテ</span>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-card-circle" onclick="openWeatherModal()">
+                        <svg id="weather-icon" class="weather-icon info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <!-- デフォルトは晴れアイコン -->
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </div>
+                    <span class="info-label-text">天気</span>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-card-circle" onclick="openVisitorsModal()">
+                        <svg class="info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <span class="info-label-text">訪問者</span>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-card-circle" onclick="openUpdatesModal()">
+                        <svg class="info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                    </div>
+                    <span class="info-label-text">更新</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="profile-section">
+        <h2 class="profile-name">About Me</h2>
+        <p class="profile-bio">
+            フッ軽、埼玉と東京を往復する学生。<br>
+            日々の思考とログをこの場所に残しています。
+        </p>
+        <div style="margin-top: 3rem;">
+            <div class="social-links">
+                <a href="/about.html" class="social-link">About Me →</a>
+            </div>
+        </div>
+        <div style="margin-top: 3rem;">
+            <h3 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 1rem;">Claude Sonnet 4.6</h3>
+            <p class="profile-bio" style="margin-bottom: 1rem;">
+                このサイトのデザイン・実装を担当した大規模言語モデル(Anthropic社)。<br>
+                フロントエンド開発、Cloudflare Workers構築、Notion API連携など、<br>
+                サイト全体のアーキテクチャを設計・実装しました。
+            </p>
+            <div class="social-links">
+                <a href="/claude.html" class="social-link">技術仕様を見る</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-header-with-more">
+        <h2 class="section-title">Blog</h2>
+        <button class="more-button" onclick="openBlogModal()">もっと見る</button>
+    </div>
+    <div id="blog-grid" class="content-grid">
+        <div class="loading-placeholder"></div>
+        <div class="loading-placeholder"></div>
+        <div class="loading-placeholder"></div>
+    </div>
+
+    <div class="section-header-with-more">
+        <div>
+            <h2 class="section-title">Voices</h2>
+            <a href="https://understood-helmet-14b.notion.site/3014a217523980dca309f5381d12bb16?pvs=105" target="_blank" style="display: block; font-size: 0.9rem; color: var(--text-secondary); text-decoration: none; margin-top: 0.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">Message to Shun →</a>
+        </div>
+        <button class="more-button" onclick="openPodcastModal()">もっと見る</button>
+    </div>
+    <div id="podcast-grid" class="content-grid">
+        <div class="loading-placeholder"></div>
+        <div class="loading-placeholder"></div>
+    </div>
+<!-- index.html の Voices セクションの下に追加 -->
+<!-- Life Log Section -->
+ <!--
+<section class="content-section" id="lifelog">
+<div class="section-header-with-more">
+    <div>
+        <h2 class="section-title">Fasts</h2>
+    </div>
+    <a href="https://www.tumblr.com/quinfa" target="_blank" class="more-button">もっと見る</a>
+</div>
+<div id="lifelog-grid" class="content-grid">
+    <div class="loading-placeholder"></div>
+    <div class="loading-placeholder"></div>
+</div>
+
+</section>
+-->
+    <div id="heavyRotationModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeHeavyRotation()">&times;</span>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+            </svg>
+            今月のヘビロテ
+        </h2>
+        <div id="topTracksList" class="top-tracks-list">
+            <div class="loading-placeholder"></div>
+        </div>
+    </div>
+</div>
+
+<div id="blogModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeBlogModal()">&times;</span>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            All Blog Posts
+        </h2>
+        <div id="blogModalList" class="modal-list">
+            <div class="loading-placeholder"></div>
+        </div>
+    </div>
+</div>
+
+<div id="podcastModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closePodcastModal()">&times;</span>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+            All Episodes
+        </h2>
+        <div id="podcastModalList" class="modal-list">
+            <div class="loading-placeholder"></div>
+        </div>
+    </div>
+</div>
+
+<div id="updatesModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeUpdatesModal()">&times;</span>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            Update History
+        </h2>
+        <div id="updatesModalList" class="modal-list">
+            <div class="loading-placeholder"></div>
+        </div>
+    </div>
+</div>
+
+<div id="weatherModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeWeatherModal()">&times;</span>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            Weather in Tokyo
+        </h2>
+        <div class="modal-info-display">
+            <p id="weather-modal-status" class="modal-info-main">Loading...</p>
+            <p class="modal-info-sub">Current weather conditions</p>
+        </div>
+    </div>
+</div>
+
+<div id="visitorsModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeVisitorsModal()">&times;</span>
+        <h2 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Visitor Count
+        </h2>
+        <div class="modal-info-display">
+            <p id="visitor-modal-count" class="modal-info-main" style="font-family: 'Courier New', monospace; letter-spacing: 0.1em;">--------</p>
+            <p class="modal-info-sub">Total visitors</p>
+        </div>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SRDPDNBZ18"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-SRDPDNBZ18');
+    </script>
+
+    <script>
+        async function updateCounter() {
+            try {
+                // カウント増やす
+                await fetch('https://notion-proxy.jaredforfes.workers.dev/?type=counter&action=increment');
+                
+                // 現在のカウント取得
+                const res = await fetch('https://notion-proxy.jaredforfes.workers.dev/?type=counter&action=get');
+                const data = await res.json();
+                
+                // 8桁ゼロパディング
+                const count = String(data.count).padStart(8, '0');
+                document.getElementById('visitor-modal-count').textContent = count;
+            } catch (e) {
+                console.error('Counter error:', e);
+                document.getElementById('visitor-modal-count').textContent = '--------';
+            }
+        }
+        // ページ読み込み時に実行
+        updateCounter();
+        
+        function openWeatherModal() {
+            document.getElementById('weatherModal').classList.add('active');
+        }
+
+        function closeWeatherModal() {
+            document.getElementById('weatherModal').classList.remove('active');
+        }
+
+        function openVisitorsModal() {
+            document.getElementById('visitorsModal').classList.add('active');
+        }
+
+        function closeVisitorsModal() {
+            document.getElementById('visitorsModal').classList.remove('active');
+        }
+    </script>
+
+    <script>
+        const WORKER_URL = "https://notion-proxy.jaredforfes.workers.dev/";
+        const NEW_THRESHOLD_HOURS = 3;
+
+// Updates 取得（リンクなし版）
+async function fetchUpdates() {
+    try {
+        const res = await fetch(`${WORKER_URL}?type=updates`);
+        const data = await res.json();
+        
+        if (data && data.length > 0) {
+            const latest = data[0];
+            // バージョンバッジを更新
+            const versionBadge = document.getElementById('version-badge');
+            if (versionBadge) {
+                versionBadge.textContent = latest.version;
+            }
+        }
+    } catch (e) {
+        console.error('Updates error:', e);
+        const versionBadge = document.getElementById('version-badge');
+        if (versionBadge) {
+            versionBadge.textContent = '';
+        }
+    }
+}
+
+// Updates Modal
+let allUpdates = [];
+async function openUpdatesModal() {
+    const modal = document.getElementById('updatesModal');
+    modal.classList.add('active');
+    
+    if (allUpdates.length === 0) {
+        try {
+            const res = await fetch(`${WORKER_URL}?type=updates`);
+            allUpdates = await res.json();
+            
+            const list = document.getElementById('updatesModalList');
+            list.innerHTML = allUpdates.map(update => `
+                <div class="modal-item" style="cursor: default;">
+                    <div class="modal-item-label">${update.version}</div>
+                    <div class="modal-item-title">${update.category}</div>
+                    <div class="modal-item-date">${update.description}</div>
+                </div>
+            `).join('');
+        } catch (e) {
+            console.error('Updates modal error:', e);
+        }
+    }
+}
+
+function closeUpdatesModal() {
+    document.getElementById('updatesModal').classList.remove('active');
+}
+
+        // Blog Modal
+        let allBlogPosts = [];
+        async function openBlogModal() {
+            const modal = document.getElementById('blogModal');
+            modal.classList.add('active');
+            
+            if (allBlogPosts.length === 0) {
+                try {
+                    const res = await fetch(`${WORKER_URL}?type=blog`);
+                    allBlogPosts = await res.json();
+                    
+                    const list = document.getElementById('blogModalList');
+                    list.innerHTML = allBlogPosts.map(post => `
+                        <div class="modal-item" onclick="window.open('${post.url}', '_blank')">
+                            <div class="modal-item-label">Blog Post</div>
+                            <div class="modal-item-title">${post.title}</div>
+                            <div class="modal-item-date">${post.date}</div>
+                        </div>
+                    `).join('');
+                } catch (e) {
+                    console.error('Blog modal error:', e);
+                }
+            }
+        }
+
+        function closeBlogModal() {
+            document.getElementById('blogModal').classList.remove('active');
+        }
+
+        // Podcast Modal
+        let allPodcastEpisodes = [];
+        async function openPodcastModal() {
+            const modal = document.getElementById('podcastModal');
+            modal.classList.add('active');
+            
+            if (allPodcastEpisodes.length === 0) {
+                try {
+                    const res = await fetch(`${WORKER_URL}?type=podcast`);
+                    allPodcastEpisodes = await res.json();
+                    
+                    const list = document.getElementById('podcastModalList');
+                    list.innerHTML = allPodcastEpisodes.map(episode => `
+                        <div class="modal-item" onclick="window.open('${episode.url}', '_blank')">
+                            <div class="modal-item-label">Episode ${episode.episodeId || ''}</div>
+                            <div class="modal-item-title">${episode.title}</div>
+                            <div class="modal-item-date">${episode.date}</div>
+                        </div>
+                    `).join('');
+                } catch (e) {
+                    console.error('Podcast modal error:', e);
+                }
+            }
+        }
+
+        function closePodcastModal() {
+            document.getElementById('podcastModal').classList.remove('active');
+        }
+
+        // ヘビロテデータをキャッシュ
+        let cachedTopTracks = null;
+
+        async function preloadTopTracks() {
+            try {
+                const res = await fetch('https://notion-proxy.jaredforfes.workers.dev/?type=toptracks&period=1month&limit=10');
+                cachedTopTracks = await res.json();
+            } catch (e) {
+                console.error('Preload top tracks error:', e);
+            }
+        }
+
+        window.addEventListener('load', async () => {
+            await Promise.all([
+                fetchContent(WORKER_URL, 'blog-grid', 'blog'),
+                fetchContent(`${WORKER_URL}?type=podcast`, 'podcast-grid', 'podcast'),
+                updateWeather(),
+                fetchUpdates(),
+                preloadTopTracks() // ヘビロテデータを事前読み込み
+            ]);
+
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.classList.add('fade-out');
+                loader.addEventListener('transitionend', () => {
+                    loader.style.display = 'none';
+                }, { once: true });
+            }, 1200);
+        });
+
+        async function updateWeather() {
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.7511&longitude=139.7093&current=weather_code,temperature_2m&timezone=Asia%2FTokyo');
+                const data = await res.json();
+                const code = data.current.weather_code;
+                const temp = Math.round(data.current.temperature_2m);
+
+                let condition = "Clear";
+                let iconSVG = '';
+
+                if (code === 0) {
+                    condition = "Clear";
+                    // 晴れ（太陽）
+                    iconSVG = `
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    `;
+                } else if (code >= 1 && code <= 3) {
+                    condition = "Fair";
+                    // 曇り（雲）
+                    iconSVG = `
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                    `;
+                } else if (code >= 51 && code <= 67 || code >= 80) {
+                    condition = "Rain";
+                    // 雨（雲と雨粒）
+                    iconSVG = `
+                        <line x1="16" y1="13" x2="16" y2="21"></line>
+                        <line x1="8" y1="13" x2="8" y2="21"></line>
+                        <line x1="12" y1="15" x2="12" y2="23"></line>
+                        <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path>
+                    `;
+                } else if (code >= 71 && code <= 77) {
+                    condition = "Snow";
+                    // 雪（雪の結晶）
+                    iconSVG = `
+                        <line x1="12" y1="2" x2="12" y2="22"></line>
+                        <path d="m17 7-5 5-5-5"></path>
+                        <path d="m17 17-5-5-5 5"></path>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="m7 7 5 5-5 5"></path>
+                        <path d="m17 7-5 5 5 5"></path>
+                    `;
+                } else {
+                    condition = "Cloudy";
+                    // 曇り
+                    iconSVG = `
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                    `;
+                }
+
+                // アイコンを更新
+                const weatherIcon = document.getElementById('weather-icon');
+                if (weatherIcon) {
+                    weatherIcon.innerHTML = iconSVG;
+                }
+
+                document.getElementById('weather-modal-status').textContent = `${condition} / ${temp}°C`;
+            } catch (e) {
+                console.error('Weather error:', e);
+            }
+        }
+
+        async function fetchContent(url, gridId, type) {
+            const grid = document.getElementById(gridId);
+            
+            // Try primary URL first
+            try {
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data && Array.isArray(data) && data.length > 0) {
+                    renderContent(grid, data, type);
+                    return;
+                }
+            } catch (error) {
+                console.warn(`Primary fetch failed for ${gridId}, trying fallback:`, error);
+            }
+            
+            // Try fallback URL
+            try {
+                const fallbackType = type === 'blog' ? 'blog-fallback' : 'podcast-fallback';
+                const fallbackUrl = url.replace(/type=(blog|podcast)/, `type=${fallbackType}`);
+                
+                const fallbackResponse = await fetch(fallbackUrl);
+                
+                if (fallbackResponse.ok) {
+                    const fallbackData = await fallbackResponse.json();
+                    
+                    if (fallbackData && Array.isArray(fallbackData) && fallbackData.length > 0) {
+                        renderContent(grid, fallbackData, type);
+                        console.info(`${gridId}: Loaded from fallback cache`);
+                        return;
+                    }
+                }
+            } catch (fallbackError) {
+                console.error(`Fallback fetch also failed for ${gridId}:`, fallbackError);
+            }
+            
+            // Show error message
+            const fallbackMessage = `
+                <div class="content-card" style="text-align: center; cursor: default;">
+                    <h3 class="card-title">コンテンツを表示できません</h3>
+                    <p class="card-excerpt" style="margin-bottom: 1rem;">
+                        お使いの環境ではNotionからのデータ取得に対応していないか、<br>
+                        ネットワークエラーが発生しました。
+                    </p>
+                    <p class="card-excerpt">
+                        最新のコンテンツは<a href="https://understood-helmet-14b.notion.site" target="_blank" style="color: var(--accent); text-decoration: underline;">Notionページ</a>でご覧いただけます。
+                    </p>
+                </div>
+            `;
+            
+            grid.innerHTML = fallbackMessage;
+        }
+        
+        function renderContent(grid, data, type) {
+            const now = new Date();
+            
+            grid.innerHTML = data.slice(0, 6).map(item => {
+                const itemDate = new Date(item.date);
+                const diffInHours = (now - itemDate) / (1000 * 60 * 60);
+                const isNew = diffInHours <= NEW_THRESHOLD_HOURS;
+                
+                return `
+                    <div class="content-card" onclick="window.open('${item.url}','_blank')">
+                        <div class="card-header">
+                            <div class="card-label">
+                                ${type === 'blog' ? 'Blog Post' : 'Podcast Episode'}
+                                ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+                            </div>
+                            <div class="card-date">${(item.date || '').replace(/-/g, '.')}</div>
+                        </div>
+                        <h3 class="card-title">${item.title}</h3>
+                        <p class="card-excerpt">${item.excerpt || 'すぐ届く、いま感じる。'}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+        async function openHeavyRotation() {
+    const modal = document.getElementById('heavyRotationModal');
+    modal.classList.add('active');
+    
+    const tracksList = document.getElementById('topTracksList');
+    
+    // キャッシュがあればすぐ表示
+    if (cachedTopTracks) {
+        tracksList.innerHTML = cachedTopTracks.map((track, index) => `
+            <div class="track-item" onclick="window.open('${track.url}', '_blank')">
+                <div class="track-number">${index + 1}</div>
+                ${track.image ? `<img src="${track.image}" alt="${track.name}" class="track-image">` : ''}
+                <div class="track-info">
+                    <div class="track-name">${track.name}</div>
+                    <div class="track-artist">${track.artist}</div>
+                    <div class="track-playcount">${track.playcount} plays</div>
+                </div>
+            </div>
+        `).join('');
+        return;
+    }
+    
+    // キャッシュがない場合は取得
+    try {
+        const res = await fetch('https://notion-proxy.jaredforfes.workers.dev/?type=toptracks&period=1month&limit=10');
+        const tracks = await res.json();
+        cachedTopTracks = tracks;
+        
+        tracksList.innerHTML = tracks.map((track, index) => `
+            <div class="track-item" onclick="window.open('${track.url}', '_blank')">
+                <div class="track-number">${index + 1}</div>
+                ${track.image ? `<img src="${track.image}" alt="${track.name}" class="track-image">` : ''}
+                <div class="track-info">
+                    <div class="track-name">${track.name}</div>
+                    <div class="track-artist">${track.artist}</div>
+                    <div class="track-playcount">${track.playcount} plays</div>
+                </div>
+            </div>
+        `).join('');
+    } catch (e) {
+        console.error('Top tracks error:', e);
+        tracksList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">データの取得に失敗しました</p>';
+    }
+}
+
+function closeHeavyRotation() {
+    const modal = document.getElementById('heavyRotationModal');
+    modal.classList.remove('active');
+}
+
+// Modal外クリックで閉じる
+document.addEventListener('click', (e) => {
+    if (e.target.id === 'blogModal') closeBlogModal();
+    if (e.target.id === 'podcastModal') closePodcastModal();
+    if (e.target.id === 'heavyRotationModal') closeHeavyRotation();
+    if (e.target.id === 'updatesModal') closeUpdatesModal();
+    if (e.target.id === 'weatherModal') closeWeatherModal();
+    if (e.target.id === 'visitorsModal') closeVisitorsModal();
+});
+
+// ESCキーで閉じる
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeBlogModal();
+        closePodcastModal();
+        closeHeavyRotation();
+        closeUpdatesModal();
+        closeWeatherModal();
+        closeVisitorsModal();
+    }
+});
+/*
+async function loadLifeLog() {
+    const container = document.getElementById('lifelog-grid');
+    
+    try {
+        const res = await fetch('https://notion-proxy.jaredforfes.workers.dev/?type=tumblr&limit=6');
+        
+        if (!res.ok) {
+            throw new Error('Tumblr API Error');
+        }
+        
+        const posts = await res.json();
+        
+        if (!posts || posts.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">まだ投稿がありません</p>';
+            return;
+        }
+        
+        container.innerHTML = '';
+        
+        posts.forEach(post => {
+            const card = document.createElement('div');
+            card.className = 'content-card';
+            card.onclick = () => window.open(post.link, '_blank');
+            
+            // 日付フォーマット
+            const date = new Date(post.date);
+            const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
+            let bodyText = post.text || '';
+
+if (post.title && bodyText.startsWith(post.title)) {
+    bodyText = bodyText.replace(post.title, '').trim();
+}
+
+            card.innerHTML = `
+${post.image ? `<img src="${post.image}" alt="${post.title}" class="lifelog-image">` : ''}
+<div class="podcast-info">
+    <h3 class="podcast-title">${post.title}</h3>
+    ${bodyText ? `<p class="lifelog-text">${bodyText}</p>` : ''}
+    <p class="lifelog-date">${formattedDate}</p>
+</div>
+`;
+            
+            container.appendChild(card);
+        });
+        
+    } catch (error) {
+        console.error('Life Log error:', error);
+        container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">読み込みに失敗しました</p>';
+    }
+}
+
+// ページ読み込み時に実行
+loadLifeLog();
+*/
+    </script>
+    <script src="/common.js"></script>
+</body>
+</html>
