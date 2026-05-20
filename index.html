@@ -3,322 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ffnet.work</title>
+  <title>ffnet.work — Moved to shunature.one</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --paper: #f5f2eb;
-      --ink: #1a1814;
-      --ink-light: #6b6760;
-      --rule: #d8d3c8;
-      --accent: #3a5a8c;
-      --red: #b34040;
-    }
-
-    html, body {
-      height: 100%;
-      overflow: hidden;
-    }
-
     body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: 'Zen Kaku Gothic New', sans-serif;
-      font-weight: 300;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-family: 'Plus Jakarta Sans', 'Zen Kaku Gothic New', sans-serif;
     }
-
-    /* 紙のテクスチャ背景 */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(
-          transparent,
-          transparent 31px,
-          var(--rule) 31px,
-          var(--rule) 32px
-        );
-      opacity: 0.5;
-      pointer-events: none;
-      z-index: 0;
+    /* Geminiのグラデーションを再現するアニメーション背景 */
+    .gemini-gradient {
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #020617 100%);
     }
-
-    /* 左の赤い縦線（ノートの余白線） */
-    body::after {
-      content: '';
-      position: fixed;
-      left: 72px;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: var(--red);
-      opacity: 0.25;
-      pointer-events: none;
-      z-index: 0;
+    .gemini-glow {
+      background: linear-gradient(90deg, #93c5fd, #c084fc, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-
-    .page {
-      position: relative;
-      z-index: 1;
-      width: 100vw;
-      height: 100vh;
-      display: grid;
-      grid-template-columns: 72px 1fr;
-      grid-template-rows: 1fr;
-    }
-
-    /* 左マージン */
-    .margin {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 48px;
-      gap: 24px;
-    }
-
-    .margin-num {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      color: var(--rule);
-      letter-spacing: 0.05em;
-      writing-mode: vertical-rl;
-      user-select: none;
-    }
-
-    /* メインコンテンツ */
-    .content {
-      padding: 48px 64px 48px 32px;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      height: 100vh;
-      gap: 0;
-    }
-
-    /* ヘッダー */
-    header {
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--rule);
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-
-    .site-name {
-      font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      color: var(--ink);
-    }
-
-    .site-tagline {
-      font-size: 10px;
-      color: var(--ink-light);
-      letter-spacing: 0.08em;
-    }
-
-    /* メイン */
-    main {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      padding: 32px 0;
-      align-content: start;
-    }
-
-    .block {
-      padding: 24px 32px 24px 0;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .block:nth-child(even) {
-      padding-left: 32px;
-      padding-right: 0;
-      border-left: 1px solid var(--rule);
-    }
-
-    .block-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      color: var(--ink-light);
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .block-body {
-      font-size: 12px;
-      line-height: 1.9;
-      color: var(--ink-light);
-    }
-
-    /* プロフィールブロック */
-    .profile-name {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 4px;
-    }
-
-    .profile-id {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--accent);
-      margin-bottom: 12px;
-    }
-
-    /* メールリンク用スタイル */
-    .mail-links {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 8px;
-    }
-
-    .mail-link-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: var(--ink);
-      font-size: 13px;
-      font-weight: 400;
-      transition: color 0.15s;
-    }
-
-    .mail-link-item:hover {
-      color: var(--accent);
-    }
-
-    .mail-link-item::before {
-      content: '→';
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--rule);
-    }
-
-    .mail-link-item:hover::before {
-      color: var(--accent);
-    }
-
-    .mail-desc {
-      font-size: 11px;
-      color: var(--ink-light);
-      margin-top: 2px;
-      padding-left: 24px;
-    }
-
-    /* フッター */
-    footer {
-      padding-top: 16px;
-      border-top: 1px solid var(--rule);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-left, .footer-right {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      color: var(--rule);
-      letter-spacing: 0.05em;
-    }
-
-    /* スマホ対応 */
-    @media (max-width: 640px) {
-      html, body { overflow: auto; }
-      body::after { left: 0; display: none; }
-      .page { grid-template-columns: 1fr; height: auto; min-height: 100vh; }
-      .margin { display: none; }
-      .content { padding: 32px 24px; grid-template-rows: auto auto auto; height: auto; gap: 0; }
-      main { grid-template-columns: 1fr; }
-      .block:nth-child(even) { padding-left: 0; border-left: none; }
+    .gemini-border-glow:hover {
+      box-shadow: 0 0 20px rgba(192, 132, 252, 0.15);
+      border-color: rgba(192, 132, 252, 0.4);
     }
   </style>
 </head>
-<body>
+<body class="gemini-gradient text-slate-100 min-h-screen flex flex-col justify-between selection:bg-purple-500/30 selection:text-purple-200">
 
-<div class="page">
-  <div class="margin">
-    <span class="margin-num">01 02 03 04 05 06 07 08 09 10</span>
-  </div>
+  <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
-  <div class="content">
-    <header>
-      <div>
-        <div class="site-name">ffnet.work</div>
-        <div class="site-tagline">DUSTPROOF DREAMER</div>
-      </div>
-    </header>
+  <header class="relative z-10 max-w-5xl w-full mx-auto px-6 py-6 flex justify-between items-center border-b border-slate-800/60 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <span class="text-lg font-bold tracking-wider text-slate-200">ffnet.work</span>
+      <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full border border-slate-700">ARCHIVED</span>
+    </div>
+    <div class="text-xs text-slate-500 font-mono">STATUS: 301 MOVED</div>
+  </header>
 
-    <main>
-      <div class="block">
-        <div class="block-label">welcome</div>
-        <div class="profile-name">Shun Tonegawa</div>
-        <div class="profile-id">ffnet.work</div>
-        <div class="block-body">
-          飽き性、でも自由に。<br>
-          web / music / photography
-        </div>
-      </div>
+  <main class="relative z-10 max-w-3xl w-full mx-auto px-6 py-16 md:py-24 flex-1 flex flex-col justify-center">
+    
+    <div class="inline-flex self-start items-center gap-2 bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs px-3 py-1 rounded-full mb-6">
+      <span class="flex h-2 w-2 relative">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+      </span>
+      Webサイトを移転しました
+    </div>
 
-      <div class="block">
-        <div class="block-label">contact</div>
-        <div class="block-body">
-          御用の方は、以下の目的別のリンクからメールを作成してください。<br>
-          <span style="font-size: 11px; color: var(--ink-light);">（スパム対策のためJavaScriptでアドレスを保護しています）</span>
-        </div>
+    <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-tight">
+      新しい場所、<br>
+      <span class="gemini-glow">shunature.one</span> へ。
+    </h1>
+
+    <p class="text-slate-400 text-base md:text-lg max-w-xl mb-12 leading-relaxed">
+      ffnet.work は役割を終え、新しいメインサイトへ統合されました。
+      これまでのコンテンツや活動の記録は、新ドメインにて引き続き更新していきます。
+    </p>
+
+    <div class="mb-16">
+      <a href="https://shunature.one" class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold px-8 py-4 rounded-2xl shadow-lg shadow-purple-500/10 transition-all transform hover:-translate-y-0.5 duration-200">
+        <span>shunature.one を見に行く</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="border-t border-slate-800/80 my-4"></div>
+
+    <section class="mt-8">
+      <h2 class="text-sm font-semibold tracking-widest uppercase text-slate-500 mb-6">Contact & Inquiries</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         
-        <div class="mail-links">
-          <div>
-            <a href="#" id="mail-chat" class="mail-link-item">管理人への「交流」メール</a>
-            <div class="mail-desc">雑談やメッセージなど、お気軽にどうぞ。</div>
+        <a href="#" id="mail-chat" class="group block p-6 bg-slate-900/40 border border-slate-800 rounded-2xl transition-all duration-200 gemini-border-glow backdrop-blur-sm">
+          <div class="flex justify-between items-start mb-3">
+            <h3 class="font-semibold text-slate-200 group-hover:text-purple-300 transition-colors">管理人へメールを送る</h3>
+            <span class="text-xs text-purple-400 font-mono bg-purple-500/10 px-2 py-0.5 rounded">交流</span>
           </div>
-          <div>
-            <a href="#" id="mail-site" class="mail-link-item">「shunature.oneについて」の問い合わせ</a>
-            <div class="mail-desc">サイトに関する技術的な質問やご連絡はこちらから。</div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            雑談、感想、メッセージなど、管理人（Shun Tonegawa）への気軽な連絡はこちらからどうぞ。
+          </p>
+        </a>
+
+        <a href="#" id="mail-site" class="group block p-6 bg-slate-900/40 border border-slate-800 rounded-2xl transition-all duration-200 gemini-border-glow backdrop-blur-sm">
+          <div class="flex justify-between items-start mb-3">
+            <h3 class="font-semibold text-slate-200 group-hover:text-blue-300 transition-colors">サイトに関する問い合わせ</h3>
+            <span class="text-xs text-blue-400 font-mono bg-blue-500/10 px-2 py-0.5 rounded">shunature.oneについて</span>
           </div>
-        </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            新しいWebサイトのコンテンツや技術的な内容、その他オフィシャルな問い合わせはこちらから。
+          </p>
+        </a>
+
       </div>
-    </main>
+      <p class="text-[11px] text-slate-600 mt-3 text-right">※スパム防止のため、メールアドレスは保護されています。</p>
+    </section>
 
-    <footer>
-      <span class="footer-left">Made with precision.</span>
-      <span class="footer-right">© 2026 shunature</span>
-    </footer>
-  </div>
-</div>
+  </main>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // メールアドレスを分解して保持（クローラーの文字検索対策）
-    const user = "contact";
-    const domain = "ffnet.work";
-    const email = user + "@" + domain;
+  <footer class="relative z-10 max-w-5xl w-full mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-slate-800/60 text-xs text-slate-500 font-mono">
+    <div>Designed with Gemini inspired style.</div>
+    <div>© 2026 shunature</div>
+  </footer>
 
-    // 件名をエンコード
-    const subjectChat = encodeURIComponent("交流");
-    const subjectSite = encodeURIComponent("shunature.oneについて");
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // メールアドレスの結合（クローラー対策）
+      const u = "contact";
+      const d = "ffnet.work";
+      const addr = u + "@" + d;
 
-    // 各要素に動的に href を設定
-    const chatLink = document.getElementById("mail-chat");
-    const siteLink = document.getElementById("mail-site");
+      // 件名のエンコード
+      const subChat = encodeURIComponent("交流");
+      const subSite = encodeURIComponent("shunature.oneについて");
 
-    if (chatLink) {
-      chatLink.href = "mailto:" + email + "?subject=" + subjectChat;
-    }
-    if (siteLink) {
-      siteLink.href = "mailto:" + email + "?subject=" + subjectSite;
-    }
-  });
-</script>
+      // 動的に href を上書き
+      const linkChat = document.getElementById("mail-chat");
+      const linkSite = document.getElementById("mail-site");
+
+      if (linkChat) {
+        linkChat.href = "mailto:" + addr + "?subject=" + subChat;
+      }
+      if (linkSite) {
+        linkSite.href = "mailto:" + addr + "?subject=" + subSite;
+      }
+    });
+  </script>
 
 </body>
 </html>
